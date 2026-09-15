@@ -1,0 +1,11 @@
+# MIT phù hợp hơn PL cho một kho bài tập vì mấy lý do sau:
+
+## Mục đích sử dụng khác nhau. Bài tập/exercises thường được viết ra để người khác đọc, tham khảo, chỉnh sửa và tái sử dụng tự do — kể cả trong dự án thương mại hay closed-source. MIT cho phép điều đó chỉ với yêu cầu giữ lại thông báo bản quyền, không ràng buộc gì thêm.
+
+## GPL có tính "lan truyền" (copyleft). Nếu ai đó lấy code từ kho bài tập rồi tích hợp vào dự án riêng, GPL buộc toàn bộ dự án đó phải mở mã nguồn theo GPL. Với một kho học tập, điều này tạo rào cản không cần thiết — người học ngại dùng lại vì sợ vướng nghĩa vụ pháp lý.
+
+## Đơn giản, dễ hiểu. MIT chỉ vài dòng, không cần giải thích nhiều cho người mới; GPL dài, phức tạp, dễ gây hiểu lầm về nghĩa vụ đi kèm.
+
+## Tối đa hóa khả năng lan tỏa. Với repo mang tính giáo dục, mục tiêu thường là càng nhiều người dùng, học hỏi, fork càng tốt — MIT không cản trở việc đó, kể cả khi họ dùng cho mục đích thương mại.
+
+Nếu mục tiêu là bảo vệ code khỏi bị "đóng lại" bởi bên thứ ba, GPL mới là lựa chọn hợp lý — nhưng với kho bài tập mang tính tham khảo, MIT phù hợp hơn.
