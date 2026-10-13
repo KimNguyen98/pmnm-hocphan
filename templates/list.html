@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Danh sách sinh viên{% endblock %}
+
+{% block content %}
+  <h2>Danh sách sinh viên</h2>
+  <form method="get" action="{{ url_for('students') }}">
+    {% if lop_chon %}<input type="hidden" name="lop" value="{{ lop_chon }}">{% endif %}
+    <input name="q" value="{{ q }}" placeholder="Tìm theo MSSV hoặc họ tên">
+    <button type="submit">Tìm</button>
+  </form>
+  <br>
+  <div class="filter">
+    <a href="{{ url_for('students') }}" class="{{ 'active' if not lop_chon }}">Tất cả</a>
+    {% for l in danh_sach_lop %}
+      <a href="{{ url_for('students', lop=l) }}"
+         class="{{ 'active' if lop_chon and l.lower() == lop_chon.lower() }}">{{ l }}</a>
+    {% endfor %}
+  </div>
+  <br>
+
+  {% if rows %}
+  <table>
+    <tr><th>MSSV</th><th>Họ tên</th><th>Lớp</th><th>Điểm TB</th><th>Xếp loại</th></tr>
+    {% for r in rows %}
+    <tr>
+      <td><a href="{{ url_for('detail', mssv=r.mssv) }}">{{ r.mssv }}</a></td>
+      <td>{{ r.name }}</td>
+      <td>{{ r.lop }}</td>
+      <td>{{ r.avg if r.avg is not none else '--' }}</td>
+      <td>{{ r.rank }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>Không có sinh viên phù hợp.</p>
+  {% endif %}
+
+  <p><a href="{{ url_for('index') }}">&larr; Về trang chủ</a></p>
+{% endblock %}

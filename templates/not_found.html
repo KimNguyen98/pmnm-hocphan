@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Không tìm thấy{% endblock %}
+
+{% block content %}
+  <h2>Không tìm thấy sinh viên</h2>
+  <p>Không có sinh viên nào có MSSV <b>{{ mssv }}</b>.</p>
+  <p><a href="{{ url_for('students') }}">&larr; Quay lại danh sách</a></p>
+{% endblock %}

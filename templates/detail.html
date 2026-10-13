@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ s.name }}{% endblock %}
+
+{% block content %}
+  <h2>{{ s.name }}</h2>
+  <p>MSSV: <b>{{ mssv }}</b></p>
+  <p>Lớp: <a href="{{ url_for('students', lop=s.lop) }}">{{ s.lop }}</a></p>
+  <p>Điểm TB: <b>{{ avg if avg is not none else '--' }}</b></p>
+  <p>Xếp loại: <b>{{ rank }}</b></p>
+
+  <h3>Bảng điểm từng học phần</h3>
+  {% if s.scores %}
+  <table>
+    <tr><th>Học phần</th><th>Điểm</th></tr>
+    {% for mon, diem in s.scores.items() %}
+    <tr><td>{{ mon }}</td><td>{{ diem }}</td></tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>Chưa có điểm.</p>
+  {% endif %}
+
+  <p><a href="{{ url_for('export', mssv=mssv) }}">Tải bảng điểm (CSV)</a></p>
+  <p>Link rút gọn: <a href="{{ short_url }}">{{ short_url }}</a></p>
+  <p><a href="{{ url_for('students') }}">&larr; Quay lại danh sách</a></p>
+{% endblock %}

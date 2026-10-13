@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Trang chủ{% endblock %}
+
+{% block content %}
+  <h2>Quản lý số điểm sinh viên</h2>
+  <p>Tổng số sinh viên: <b>{{ tong_sv }}</b></p>
+  <p>Số lớp: <b>{{ so_lop }}</b></p>
+  <ul>
+    <li><a href="{{ url_for('students') }}">Danh sách sinh viên</a> (/students)</li>
+    <li><a href="{{ url_for('api_students') }}">API sinh viên (JSON)</a> (/api/students)</li>
+  </ul>
+
+  <h3>Tìm sinh viên theo MSSV hoặc họ tên</h3>
+  <form method="post" action="{{ url_for('search') }}">
+    <input name="q" placeholder="Nhập MSSV hoặc họ tên" required>
+    <button type="submit">Tìm</button>
+  </form>
+{% endblock %}
