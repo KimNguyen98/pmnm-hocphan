@@ -1,0 +1,32 @@
+{# index.html - TRANG MÁY TÍNH (route /maytinh, CSS riêng: maytinh.css) #}
+{% extends "base.html" %}
+{% block title %}Máy tính cơ bản{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/maytinh.css') }}">{% endblock %}
+
+{% block content %}
+<div class="calc card">
+  <h2>Máy tính cơ bản</h2>
+  <form method="post">
+    <label class="field">Số thứ nhất
+      <input type="number" step="any" name="a" placeholder="Nhập số thứ nhất" value="{{ a }}" required>
+    </label>
+    <label class="field">Phép tính
+      <select name="op">
+        {% for symbol, name in ops %}
+        <option value="{{ symbol }}" {{ 'selected' if symbol == op }}>{{ name }} ({{ symbol }})</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label class="field">Số thứ hai
+      <input type="number" step="any" name="b" placeholder="Nhập số thứ hai" value="{{ b }}" required>
+    </label>
+    <button class="btn btn-block" type="submit">Tính</button>
+  </form>
+
+  {% if error %}
+    <div class="calc-result error">{{ error }}</div>
+  {% elif result is not none %}
+    <div class="calc-result">Kết quả: {{ result }}</div>
+  {% endif %}
+</div>
+{% endblock %}
