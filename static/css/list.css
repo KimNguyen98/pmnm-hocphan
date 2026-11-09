@@ -1,0 +1,27 @@
+/* list.css - riêng cho trang DANH SÁCH SINH VIÊN (list.html) */
+.list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.list-head .inline-form { width: 100%; max-width: 380px; }
+
+/* Nút lọc theo lớp */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+
+.chip {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text);
+  font-size: 14px;
+}
+.chip:hover { border-color: var(--primary); text-decoration: none; }
+.chip.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+.empty { text-align: center; color: var(--muted); padding: 32px; }

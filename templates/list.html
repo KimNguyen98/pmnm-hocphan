@@ -1,39 +1,48 @@
+{# list.html - TRANG DANH SÁCH SINH VIÊN (route /students, CSS riêng: list.css) #}
 {% extends "base.html" %}
 {% block title %}Danh sách sinh viên{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/list.css') }}">{% endblock %}
 
 {% block content %}
-  <h2>Danh sách sinh viên</h2>
-  <form method="get" action="{{ url_for('students') }}">
-    {% if lop_chon %}<input type="hidden" name="lop" value="{{ lop_chon }}">{% endif %}
-    <input name="q" value="{{ q }}" placeholder="Tìm theo MSSV hoặc họ tên">
-    <button type="submit">Tìm</button>
-  </form>
-  <br>
-  <div class="filter">
-    <a href="{{ url_for('students') }}" class="{{ 'active' if not lop_chon }}">Tất cả</a>
-    {% for l in danh_sach_lop %}
-      <a href="{{ url_for('students', lop=l) }}"
-         class="{{ 'active' if lop_chon and l.lower() == lop_chon.lower() }}">{{ l }}</a>
-    {% endfor %}
+<div class="list-head">
+  <div>
+    <h1 class="page-title">Danh sách sinh viên</h1>
+    <span class="muted">{{ rows|length }} sinh viên</span>
   </div>
-  <br>
+  <form class="inline-form" method="get" action="{{ url_for('students') }}">
+    {% if lop_chon %}<input type="hidden" name="lop" value="{{ lop_chon }}">{% endif %}
+    <input type="text" name="q" value="{{ q }}" placeholder="Tìm theo MSSV hoặc họ tên">
+    <button class="btn" type="submit">Tìm</button>
+  </form>
+</div>
 
-  {% if rows %}
-  <table>
-    <tr><th>MSSV</th><th>Họ tên</th><th>Lớp</th><th>Điểm TB</th><th>Xếp loại</th></tr>
-    {% for r in rows %}
-    <tr>
-      <td><a href="{{ url_for('detail', mssv=r.mssv) }}">{{ r.mssv }}</a></td>
-      <td>{{ r.name }}</td>
-      <td>{{ r.lop }}</td>
-      <td>{{ r.avg if r.avg is not none else '--' }}</td>
-      <td>{{ r.rank }}</td>
-    </tr>
-    {% endfor %}
+<div class="filters">
+  <a class="chip {{ 'active' if not lop_chon }}" href="{{ url_for('students') }}">Tất cả</a>
+  {% for l in danh_sach_lop %}
+  <a class="chip {{ 'active' if lop_chon and l.lower() == lop_chon.lower() }}" href="{{ url_for('students', lop=l) }}">{{ l }}</a>
+  {% endfor %}
+</div>
+
+{% if rows %}
+<div class="table-wrap">
+  <table class="table">
+    <thead>
+      <tr><th>MSSV</th><th>Họ tên</th><th>Lớp</th><th class="num">Điểm TB</th><th class="num">Xếp loại</th></tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td><a href="{{ url_for('detail', mssv=r.mssv) }}">{{ r.mssv }}</a></td>
+        <td>{{ r.name }}</td>
+        <td>{{ r.lop }}</td>
+        <td class="num">{{ r.avg if r.avg is not none else '--' }}</td>
+        <td class="num"><span class="badge badge-{{ RANK_CLASS.get(r.rank, 'none') }}">{{ r.rank }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
   </table>
-  {% else %}
-  <p>Không có sinh viên phù hợp.</p>
-  {% endif %}
-
-  <p><a href="{{ url_for('index') }}">&larr; Về trang chủ</a></p>
+</div>
+{% else %}
+<div class="card empty">Không có sinh viên phù hợp.</div>
+{% endif %}
 {% endblock %}
