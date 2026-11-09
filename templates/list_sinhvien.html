@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Danh sách sinh viên</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/list_sinhvien.css') }}">
+</head>
+<body>
+  <h1>Danh sách sinh viên</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>MSSV</th>
+        <th>Họ tên</th>
+        <th class="gpa">GPA</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sv in ds %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ sv.mssv }}</td>
+        <td>{{ sv.name }}</td>
+        <td class="gpa">{{ "%.2f"|format(sv.gpa) }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4" class="empty">Chưa có sinh viên nào. Vào /them-mau để thêm dữ liệu mẫu.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p>Tổng: {{ ds|length }} sinh viên</p>
+</body>
+</html>

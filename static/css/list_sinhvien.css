@@ -1,0 +1,44 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 30px auto;
+  max-width: 800px;
+  padding: 0 16px;
+  color: #222;
+}
+
+h1 {
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+th {
+  background: #f0f0f0;
+}
+
+tr:nth-child(even) {
+  background: #fafafa;
+}
+
+tbody tr:hover {
+  background: #eef5ff;
+}
+
+.gpa {
+  text-align: right;
+}
+
+.empty {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+}
