@@ -1,0 +1,4 @@
+/* not_found.css - riêng cho trang KHÔNG TÌM THẤY SINH VIÊN (not_found.html) */
+.nf { max-width: 460px; margin: 40px auto; text-align: center; }
+.nf .code { font-size: 60px; font-weight: 800; color: var(--primary); line-height: 1.1; }
+.nf p { margin: 0 0 18px; color: var(--muted); }
