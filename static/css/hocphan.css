@@ -1,0 +1,30 @@
+/* hocphan.css - riêng cho trang TÍNH ĐIỂM HỌC PHẦN (hocphan.html) */
+.hp { max-width: 560px; margin: 20px auto; }
+.hp h2 { text-align: center; margin-bottom: 16px; }
+
+.hp .table td { padding: 8px 10px; }
+.hp .table td input { padding: 7px 10px; }
+
+.hp-submit { margin-top: 14px; }
+
+.hp-error {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid #f5c2c2;
+  border-radius: 10px;
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* Bảng kết quả (tên - giá trị) */
+.kv { margin-top: 16px; }
+.kv th {
+  width: 45%;
+  background: #f8fafc;
+  color: var(--text);
+  font-size: 15px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.hp .table thead th { white-space: nowrap; }

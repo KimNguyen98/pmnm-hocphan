@@ -1,0 +1,45 @@
+{# hocphan.html - TRANG TÍNH ĐIỂM HỌC PHẦN (route /hocphan, CSS riêng: hocphan.css) #}
+{% extends "base.html" %}
+{% block title %}Tính điểm học phần{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/hocphan.css') }}">{% endblock %}
+
+{% block content %}
+<div class="hp card">
+  <h2>Tính điểm học phần</h2>
+  <form method="post">
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr><th>Thành phần</th><th>Điểm (0-10)</th><th>Trọng số (%)</th></tr>
+        </thead>
+        <tbody>
+          {% for key, ten in [('cc', 'Chuyên cần'), ('gk', 'Giữa kỳ'), ('ck', 'Cuối kỳ')] %}
+          <tr>
+            <td>{{ ten }}</td>
+            <td><input type="number" step="any" name="{{ key }}" value="{{ form[key] }}" required></td>
+            <td><input type="number" step="any" name="w_{{ key }}" value="{{ form['w_' ~ key] }}" required></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-block hp-submit" type="submit">Tính điểm</button>
+  </form>
+
+  {% if loi %}
+    <div class="hp-error">{{ loi }}</div>
+  {% elif ket_qua %}
+    <div class="table-wrap kv">
+      <table class="table">
+        <tbody>
+          <tr><th>Điểm hệ 10</th><td><b>{{ ket_qua.diem10 }}</b></td></tr>
+          <tr><th>Điểm chữ</th><td><b>{{ ket_qua.chu }}</b></td></tr>
+          <tr><th>Điểm hệ 4</th><td><b>{{ ket_qua.he4 }}</b></td></tr>
+          <tr><th>Xếp loại</th><td><span class="badge badge-{{ RANK_CLASS.get(ket_qua.xep_loai, 'none') }}">{{ ket_qua.xep_loai }}</span></td></tr>
+          <tr><th>Kết quả</th><td><span class="badge badge-{{ 'good' if ket_qua.dat else 'weak' }}">{{ 'Đạt' if ket_qua.dat else 'Không đạt' }}</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
