@@ -1,26 +1,45 @@
+{# detail.html - TRANG CHI TIẾT SINH VIÊN (route /students/<mssv>, CSS riêng: detail.css) #}
 {% extends "base.html" %}
 {% block title %}{{ s.name }}{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/detail.css') }}">{% endblock %}
 
 {% block content %}
-  <h2>{{ s.name }}</h2>
-  <p>MSSV: <b>{{ mssv }}</b></p>
-  <p>Lớp: <a href="{{ url_for('students', lop=s.lop) }}">{{ s.lop }}</a></p>
-  <p>Điểm TB: <b>{{ avg if avg is not none else '--' }}</b></p>
-  <p>Xếp loại: <b>{{ rank }}</b></p>
+<a class="back-link" href="{{ url_for('students') }}">&larr; Quay lại danh sách</a>
+
+<div class="card">
+  <div class="detail-head">
+    <div class="avatar">{{ s.name.split()[-1][0]|upper }}</div>
+    <div>
+      <h1 class="page-title">{{ s.name }}</h1>
+      <span class="muted">MSSV: {{ mssv }}</span>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info"><small>Lớp</small><a href="{{ url_for('students', lop=s.lop) }}"><b>{{ s.lop }}</b></a></div>
+    <div class="info"><small>Điểm TB</small><b>{{ avg if avg is not none else '--' }}</b></div>
+    <div class="info"><small>Xếp loại</small><span class="badge badge-{{ RANK_CLASS.get(rank, 'none') }}">{{ rank }}</span></div>
+  </div>
 
   <h3>Bảng điểm từng học phần</h3>
   {% if s.scores %}
-  <table>
-    <tr><th>Học phần</th><th>Điểm</th></tr>
-    {% for mon, diem in s.scores.items() %}
-    <tr><td>{{ mon }}</td><td>{{ diem }}</td></tr>
-    {% endfor %}
-  </table>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>Học phần</th><th class="num">Điểm</th></tr></thead>
+      <tbody>
+        {% for mon, diem in s.scores.items() %}
+        <tr><td>{{ mon }}</td><td class="num">{{ diem }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
   {% else %}
-  <p>Chưa có điểm.</p>
+  <p class="muted">Chưa có điểm.</p>
   {% endif %}
 
-  <p><a href="{{ url_for('export', mssv=mssv) }}">Tải bảng điểm (CSV)</a></p>
-  <p>Link rút gọn: <a href="{{ short_url }}">{{ short_url }}</a></p>
-  <p><a href="{{ url_for('students') }}">&larr; Quay lại danh sách</a></p>
+  <div class="actions">
+    <a class="btn" href="{{ url_for('export', mssv=mssv) }}">⬇ Tải bảng điểm (CSV)</a>
+  </div>
+  <p class="short-link">Link rút gọn: <a href="{{ short_url }}">{{ short_url }}</a></p>
+</div>
 {% endblock %}
