@@ -1,0 +1,20 @@
+/* login.css - riêng cho trang ĐĂNG NHẬP (login.html)
+   Khung .auth-box nằm trong style.css vì trang Đăng ký cũng dùng. */
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+.remember input { width: auto; margin: 0; }
+
+.hint {
+  margin: 14px 0 0;
+  padding: 10px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
