@@ -1,0 +1,16 @@
+{# profile.html - TRANG HỒ SƠ (CSS riêng: profile.css) #}
+{% extends "base.html" %}
+{% block title %}Hồ sơ{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">{% endblock %}
+
+{% block content %}
+<div class="profile-card card">
+  <div class="avatar">{{ session.user[0]|upper }}</div>
+  <h2>Hồ sơ</h2>
+  <div class="profile-row"><span>Tên đăng nhập</span><b>{{ session.user }}</b></div>
+  <div class="profile-row"><span>Trạng thái</span><b>Đã đăng nhập</b></div>
+  <form method="post" action="{{ url_for('logout') }}">
+    <button class="btn btn-outline btn-block" type="submit">Đăng xuất</button>
+  </form>
+</div>
+{% endblock %}

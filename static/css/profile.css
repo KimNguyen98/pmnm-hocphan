@@ -1,0 +1,15 @@
+/* profile.css - riêng cho trang HỒ SƠ (profile.html) */
+.profile-card { max-width: 440px; margin: 24px auto; text-align: center; }
+.profile-card .avatar { width: 72px; height: 72px; margin: 0 auto 12px; font-size: 30px; }
+
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: left;
+}
+.profile-row span { color: var(--muted); }
+.profile-card form { margin-top: 16px; }
