@@ -1,0 +1,28 @@
+{# register.html - TRANG ĐĂNG KÝ [MỚI] (CSS riêng: register.css) #}
+{% extends "base.html" %}
+{% block title %}Đăng ký{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">{% endblock %}
+
+{% block content %}
+<div class="auth-box card">
+  <h2>Đăng ký tài khoản</h2>
+  <ul class="rules">
+    <li>Tên đăng nhập: 3-20 ký tự (chữ không dấu, số, dấu gạch dưới)</li>
+    <li>Mật khẩu: ít nhất 6 ký tự</li>
+  </ul>
+  <form method="post">
+    <input type="hidden" name="next" value="{{ next_url }}">
+    <label class="field">Tên đăng nhập
+      <input type="text" name="username" value="{{ username }}" placeholder="Ví dụ: nguyenvana" autofocus required>
+    </label>
+    <label class="field">Mật khẩu
+      <input type="password" name="password" placeholder="Ít nhất 6 ký tự" required>
+    </label>
+    <label class="field">Nhập lại mật khẩu
+      <input type="password" name="confirm" placeholder="Nhập lại mật khẩu" required>
+    </label>
+    <button class="btn btn-block" type="submit">Đăng ký</button>
+  </form>
+  <p class="auth-alt">Đã có tài khoản? <a href="{{ url_for('login', next=next_url or None) }}">Đăng nhập</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+/* register.css - riêng cho trang ĐĂNG KÝ (register.html) */
+.rules {
+  margin: 0 0 16px;
+  padding: 10px 14px 10px 30px;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
