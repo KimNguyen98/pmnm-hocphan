@@ -1,18 +1,83 @@
+{# home.html - TRANG CHỦ (xem được khi chưa đăng nhập).
+   Nguồn gộp: home.html (bản gốc: lời chào, thống kê, link, form tìm) + Homes.html
+   (menu "Bài tập Flask" -> nay là các thẻ chức năng bên dưới và thanh menu trong base.html).
+   home.html gốc khai báo block content hai lần (lỗi Jinja) -> đã gộp thành một block. #}
+
 {% extends "base.html" %}
 {% block title %}Trang chủ{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">{% endblock %}
 
 {% block content %}
-  <h2>Quản lý số điểm sinh viên</h2>
-  <p>Tổng số sinh viên: <b>{{ tong_sv }}</b></p>
-  <p>Số lớp: <b>{{ so_lop }}</b></p>
-  <ul>
-    <li><a href="{{ url_for('students') }}">Danh sách sinh viên</a> (/students)</li>
-    <li><a href="{{ url_for('api_students') }}">API sinh viên (JSON)</a> (/api/students)</li>
-  </ul>
+{# [Nguồn: home.html] Logo + tiêu đề + lời chào theo trạng thái đăng nhập #}
+<section class="hero card">
+  <img class="hero-logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+  <div>
+    <h1>Quản lý số điểm sinh viên</h1>
+    {% if session.user %}
+      <p>Xin chào, <b>{{ session.user }}</b>! Chọn một chức năng bên dưới hoặc trên thanh menu.</p>
+    {% else %}
+      <p>Bạn cần đăng nhập hoặc đăng ký để sử dụng các chức năng.</p>
+      <div class="hero-actions">
+        <a class="btn" href="{{ url_for('login') }}">Đăng nhập</a>
+        <a class="btn btn-outline" href="{{ url_for('register') }}">Đăng ký</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
 
-  <h3>Tìm sinh viên theo MSSV hoặc họ tên</h3>
-  <form method="post" action="{{ url_for('search') }}">
-    <input name="q" placeholder="Nhập MSSV hoặc họ tên" required>
-    <button type="submit">Tìm</button>
-  </form>
+{% if session.user %}
+  {# [Nguồn: home.html] Thống kê - chỉ hiện khi đã đăng nhập #}
+  <section class="stats">
+    <div class="card stat"><b>{{ tong_sv }}</b><span>Tổng số sinh viên</span></div>
+    <div class="card stat"><b>{{ so_lop }}</b><span>Số lớp</span></div>
+  </section>
+
+  {# [Nguồn: home.html] Form tìm sinh viên #}
+  <section class="card quick-search">
+    <h3>Tìm sinh viên theo MSSV hoặc họ tên</h3>
+    <form class="inline-form" method="post" action="{{ url_for('search') }}">
+      <input type="text" name="q" placeholder="Nhập MSSV hoặc họ tên" required>
+      <button class="btn" type="submit">Tìm</button>
+    </form>
+  </section>
+{% endif %}
+
+{# [Nguồn: home.html + Homes.html + app.py] Các chức năng. Chưa đăng nhập: bấm vào sẽ bị chuyển sang đăng nhập #}
+<h2 class="section-title">Chức năng</h2>
+<section class="features">
+  <a class="feature card" href="{{ url_for('students') }}">
+    <span class="icon">🎓</span><h3>Danh sách sinh viên</h3>
+    <p>Xem, lọc theo lớp, tìm kiếm và xem bảng điểm.</p>
+    {% if not session.user %}<span class="lock">🔒 Cần đăng nhập</span>{% endif %}
+  </a>
+    <a class="feature card" href="{{ url_for('list_sinhvien') }}">
+    <span class="icon">📋</span><h3>Danh sách SV (CSDL)</h3>
+    <p>Danh sách sinh viên lấy từ CSDL SQLite (/list_sinhvien).</p>
+  </a>
+  <a class="feature card" href="{{ url_for('maytinh') }}">
+    <span class="icon">🧮</span><h3>Máy tính cơ bản</h3>
+    <p>Cộng, trừ, nhân, chia hai số.</p>
+    {% if not session.user %}<span class="lock">🔒 Cần đăng nhập</span>{% endif %}
+  </a>
+  <a class="feature card" href="{{ url_for('hocphan') }}">
+    <span class="icon">📝</span><h3>Tính điểm học phần</h3>
+    <p>Tính điểm hệ 10, điểm chữ, hệ 4 theo trọng số.</p>
+    {% if not session.user %}<span class="lock">🔒 Cần đăng nhập</span>{% endif %}
+  </a>
+  <a class="feature card" href="{{ url_for('api_students') }}">
+    <span class="icon">🔌</span><h3>API sinh viên</h3>
+    <p>Dữ liệu sinh viên dạng JSON (/api/students).</p>
+    {% if not session.user %}<span class="lock">🔒 Cần đăng nhập</span>{% endif %}
+  </a>
+  <a class="feature card" href="{{ url_for('sum_numbers', numbers=[4, 5, 6]) }}">
+    <span class="icon">➕</span><h3>Tổng dãy số</h3>
+    <p>Tính tổng một dãy số, ví dụ /sum/4,5,6.</p>
+    {% if not session.user %}<span class="lock">🔒 Cần đăng nhập</span>{% endif %}
+  </a>
+  <a class="feature card" href="{{ url_for('profile') }}">
+    <span class="icon">👤</span><h3>Hồ sơ</h3>
+    <p>Thông tin tài khoản của bạn.</p>
+    {% if not session.user %}<span class="lock">🔒 Cần đăng nhập</span>{% endif %}
+  </a>
+</section>
 {% endblock %}

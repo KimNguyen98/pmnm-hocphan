@@ -1,0 +1,53 @@
+/* home.css - riêng cho TRANG CHỦ (home.html) */
+.hero { display: flex; align-items: center; gap: 24px; margin-bottom: 20px; }
+
+.hero-logo {
+  width: 96px;
+  height: 96px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  object-fit: cover;
+}
+
+.hero h1 { font-size: 28px; }
+.hero p { margin: 0 0 12px; color: var(--muted); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Thống kê */
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
+.stat { text-align: center; }
+.stat b { display: block; font-size: 34px; color: var(--primary); }
+.stat span { color: var(--muted); }
+
+.quick-search h3 { font-size: 17px; }
+
+/* Các thẻ chức năng */
+.section-title { margin: 28px 0 12px; font-size: 18px; }
+
+.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+
+.feature { display: block; color: var(--text); transition: border-color 0.15s, box-shadow 0.15s; }
+.feature:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12);
+  text-decoration: none;
+}
+
+.feature .icon { font-size: 28px; }
+.feature h3 { margin: 8px 0 4px; font-size: 17px; }
+.feature p { margin: 0; color: var(--muted); font-size: 14px; }
+
+.lock {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--warn-bg);
+  color: var(--warn);
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .hero { flex-direction: column; text-align: center; }
+  .hero-actions { justify-content: center; }
+}
