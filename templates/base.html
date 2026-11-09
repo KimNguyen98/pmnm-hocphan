@@ -1,11 +1,76 @@
+{# base.html - KHUNG CHUNG của mọi trang: thanh menu (chứa toàn bộ chức năng),
+   thông báo flash, chân trang. Mỗi trang con nạp thêm CSS riêng qua block "head". #}
 <!doctype html>
 <html lang="vi">
+
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Quản lý số điểm sinh viên{% endblock %}</title>
+  {# CSS dùng chung cho mọi trang #}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {# CSS riêng của từng trang #}
+  {% block head %}{% endblock %}
 </head>
+
 <body>
-  {% block content %}{% endblock %}
+  {% set ep = request.endpoint %}
+
+  {# ===== THANH MENU: tất cả chức năng nằm ở đây. Chưa đăng nhập vẫn thấy,
+         nhưng bấm vào sẽ được chuyển sang trang Đăng nhập (xem login_required trong app.py) ===== #}
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand-link" href="{{ url_for('home') }}">
+        <img class="nav-logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+        <span>Điểm SV</span>
+      </a>
+
+      <nav class="menu-links">
+        <a href="{{ url_for('home') }}" class="{{ 'active' if ep == 'home' }}">Trang chủ</a>
+        <a href="{{ url_for('students') }}" class="{{ 'active' if ep in ('students', 'detail') }}">Sinh viên</a>
+        <a href="{{ url_for('maytinh') }}" class="{{ 'active' if ep == 'maytinh' }}">Máy tính</a>
+        <a href="{{ url_for('hocphan') }}" class="{{ 'active' if ep == 'hocphan' }}">Tính điểm học phần</a>
+        <details class="more">
+          <summary>Khác ▾</summary>
+          <div class="more-list">
+            <a href="{{ url_for('api_students') }}">API sinh viên (JSON)</a>
+            <a href="{{ url_for('sum_numbers', numbers=[4, 5, 6]) }}">Tổng dãy số (/sum/4,5,6)</a>
+          </div>
+        </details>
+      </nav>
+
+      <div class="nav-user">
+        {% if session.user %}
+          <a class="user-chip" href="{{ url_for('profile') }}">👤 {{ session.user }}</a>
+          <form method="post" action="{{ url_for('logout') }}">
+            <button class="btn btn-outline btn-sm" type="submit">Đăng xuất</button>
+          </form>
+        {% else %}
+          <a class="btn btn-outline btn-sm" href="{{ url_for('login') }}">Đăng nhập</a>
+          <a class="btn btn-sm" href="{{ url_for('register') }}">Đăng ký</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    {# Thông báo flash: success / error / info #}
+    {% for category, m in get_flashed_messages(with_categories=true) %}
+      <p class="flash flash-{{ category }}">{{ m }}</p>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="contact-buttons">
+      <a class="contact-btn" href="mailto:email@example.com">✉️ Email</a>
+      <a class="contact-btn" href="tel:+84123456789">📞 0123 456 789</a>
+      <a class="contact-btn" target="_blank" rel="noopener"
+        href="https://www.google.com/maps/search/?api=1&query=Đại+học+Khoa+học+Huế">📍 Địa chỉ</a>
+    </div>
+    <p class="copyright">© {{ now.year }} Quản lý số điểm sinh viên. Bảo lưu mọi quyền.</p>
+  </footer>
 </body>
+
 </html>
