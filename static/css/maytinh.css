@@ -1,0 +1,22 @@
+/* maytinh.css - riêng cho trang MÁY TÍNH (index.html) */
+.calc { max-width: 380px; margin: 20px auto; }
+.calc h2 { text-align: center; margin-bottom: 16px; }
+
+.calc-result {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid #b7e1c4;
+  border-radius: 10px;
+  background: var(--success-bg);
+  color: var(--success);
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.calc-result.error {
+  border-color: #f5c2c2;
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-size: 16px;
+}
