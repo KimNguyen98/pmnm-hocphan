@@ -7,7 +7,7 @@
     <select name="danh_muc" onchange="this.form.submit()">
         <option value="">Tất cả</option>
         {% for dm in ds_dm %}
-        <option value="{{ dm.id }}" {{ 'selected' if dm_id == dm.id else '' }}>{{ dm.ten }}</option>
+        <option value="{{ dm.id }}" {{ 'selected' if dm_id==dm.id else '' }}>{{ dm.ten }}</option>
         {% endfor %}
     </select>
 </form>
@@ -15,7 +15,15 @@
 <p><a href="{{ url_for('sach_them', danh_muc=dm_id) }}">+ Thêm sách</a></p>
 
 <table border="1" cellpadding="6" cellspacing="0">
-    <tr><th>ID</th><th>Tiêu đề</th><th>Tác giả</th><th>Giá</th><th>Số lượng</th><th>Danh mục</th><th>Thao tác</th></tr>
+    <tr>
+        <th>ID</th>
+        <th>Tiêu đề</th>
+        <th>Tác giả</th>
+        <th>Giá</th>
+        <th>Số lượng</th>
+        <th>Danh mục</th>
+        <th>Thao tác</th>
+    </tr>
     {% for s in ds %}
     <tr>
         <td>{{ s.id }}</td>
@@ -24,10 +32,19 @@
         <td>{{ "{:,.0f}".format(s.gia) }}</td>
         <td>{{ s.so_luong }}</td>
         <td>{{ s.danh_muc.ten }}</td>
-        <td><a href="{{ url_for('sach_sua', id=s.id) }}">Sửa</a></td>
+        <td>
+            <a href="{{ url_for('sach_sua', id=s.id) }}">Sửa</a>
+
+            <form method="post" action="{{ url_for('sach_xoa', id=s.id) }}" style="display:inline"
+                onsubmit="return confirm('Xóa sách này?')">
+                <button type="submit">Xóa</button>
+            </form>
+        </td>
     </tr>
     {% else %}
-    <tr><td colspan="7">Chưa có sách nào</td></tr>
+    <tr>
+        <td colspan="7">Chưa có sách nào</td>
+    </tr>
     {% endfor %}
 </table>
 {% endblock %}
