@@ -30,6 +30,18 @@ with app.app_context():
 
 @app.route("/")
 def dashboard():
+    theo_dm = (
+        db.session.query(
+            DanhMuc.id,
+            DanhMuc.ten,
+            func.count(Sach.id),
+            func.coalesce(func.sum(Sach.so_luong), 0),
+        )
+        .outerjoin(Sach)
+        .group_by(DanhMuc.id, DanhMuc.ten)
+        .order_by(DanhMuc.ten)
+        .all()
+    )
     return render_template(
         "dashboard.html",
         so_danh_muc=DanhMuc.query.count(),
