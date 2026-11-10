@@ -80,6 +80,7 @@ def danh_muc_xoa(id):
     return redirect(url_for("danh_muc_list"))
 
 
+#Xem danh sách sách (lọc theo danh mục)
 
 def doc_form_sach():
     return {
@@ -100,6 +101,40 @@ def sach_list():
     ds_dm = DanhMuc.query.order_by(DanhMuc.ten).all()
     return render_template("sach/danh_sach.html", ds=ds, ds_dm=ds_dm, dm_id=dm_id)
 
+
+#Thêm sách
+
+def doc_form_sach():
+    return {
+        "tieu_de": request.form["tieu_de"].strip(),
+        "tac_gia": request.form["tac_gia"].strip(),
+        "gia": float(request.form["gia"] or 0),
+        "so_luong": int(request.form["so_luong"] or 0),
+        "danh_muc_id": int(request.form["danh_muc_id"]),
+    }
+
+
+@app.route("/sach/them", methods=["GET", "POST"])
+def sach_them():
+    ds_dm = DanhMuc.query.order_by(DanhMuc.ten).all()
+    if not ds_dm:
+        flash("Hãy tạo danh mục trước khi thêm sách", "loi")
+        return redirect(url_for("danh_muc_them"))
+    dm_id = request.args.get("danh_muc", type=int)
+    if request.method == "POST":
+        try:
+            du_lieu = doc_form_sach()
+        except ValueError:
+            flash("Giá và số lượng phải là số", "loi")
+            return render_template("sach/form.html", s=None, ds_dm=ds_dm, dm_id=dm_id)
+        if not du_lieu["tieu_de"]:
+            flash("Tiêu đề không được để trống", "loi")
+            return render_template("sach/form.html", s=None, ds_dm=ds_dm, dm_id=dm_id)
+        db.session.add(Sach(**du_lieu))
+        db.session.commit()
+        flash("Đã thêm sách", "ok")
+        return redirect(url_for("sach_list", danh_muc=du_lieu["danh_muc_id"]))
+    return render_template("sach/form.html", s=None, ds_dm=ds_dm, dm_id=dm_id)
 
 if __name__ == "__main__":
     app.run(debug=True)
