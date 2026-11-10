@@ -119,3 +119,63 @@ a[href*="/them"] {
 td a[href$="/sua"] {
     margin-right: 8px;
 }
+
+form:not([action]) {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 520px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+form p {
+    margin: 12px 0;
+}
+
+input,
+select {
+    padding: 8px 10px;
+    border: 1px solid #c8d0d9;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    min-width: 260px;
+}
+
+input:focus,
+select:focus {
+    outline: 2px solid #9ec1ff;
+    border-color: #1f6feb;
+}
+
+form:not([action]) a {
+    margin-left: 12px;
+}
+
+.the-thong-ke {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.the {
+    background: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.the span {
+    display: block;
+    color: #667;
+    font-size: 0.9rem;
+}
+
+.the strong {
+    font-size: 1.6rem;
+    color: #1f3a5f;
+}
+
+h3 {
+    margin-top: 28px;
+}
