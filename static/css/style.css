@@ -1,2 +1,59 @@
-.ok { color: green; }
-.loi { color: red; }
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f6f8;
+    color: #222;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+.topbar {
+    background: #1f3a5f;
+    padding: 12px 0;
+    margin-bottom: 24px;
+}
+
+.topbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topbar h1 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #fff;
+}
+
+.topbar nav a {
+    color: #cfe0f5;
+    text-decoration: none;
+    margin-left: 16px;
+}
+
+.topbar nav a:hover {
+    color: #fff;
+}
+
+.thong-bao {
+    padding: 10px 14px;
+    border-radius: 6px;
+}
+
+.ok {
+    background: #e6f4ea;
+    color: #1e6b34;
+}
+
+.loi {
+    background: #fdecea;
+    color: #b3261e;
+}
