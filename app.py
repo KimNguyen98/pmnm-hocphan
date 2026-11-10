@@ -42,6 +42,7 @@ def dashboard():
         .order_by(DanhMuc.ten)
         .all()
     )
+    sach_moi = Sach.query.order_by(Sach.id.desc()).limit(5).all()
     return render_template(
         "dashboard.html",
         so_danh_muc=DanhMuc.query.count(),
@@ -50,6 +51,8 @@ def dashboard():
         gia_tri_kho=db.session.query(
             func.coalesce(func.sum(Sach.gia * Sach.so_luong), 0)
         ).scalar(),
+        theo_dm=theo_dm,
+        sach_moi=sach_moi,
     )
 
 @app.route("/danh-muc")
