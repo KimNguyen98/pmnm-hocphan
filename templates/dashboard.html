@@ -7,4 +7,18 @@
     <tr><th>Tổng số cuốn trong kho</th><td>{{ ton_kho }}</td></tr>
     <tr><th>Tổng giá trị kho</th><td>{{ "{:,.0f}".format(gia_tri_kho) }}</td></tr>
 </table>
+
+<h3>Thống kê theo danh mục</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>Danh mục</th><th>Số đầu sách</th><th>Số cuốn trong kho</th></tr>
+    {% for id, ten, so_dau_sach, so_cuon in theo_dm %}
+    <tr>
+        <td><a href="{{ url_for('sach_list', danh_muc=id) }}">{{ ten }}</a></td>
+        <td>{{ so_dau_sach }}</td>
+        <td>{{ so_cuon }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3">Chưa có danh mục nào</td></tr>
+    {% endfor %}
+</table>
 {% endblock %}
