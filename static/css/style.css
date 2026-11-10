@@ -57,3 +57,65 @@ body {
     background: #fdecea;
     color: #b3261e;
 }
+
+h2 {
+    margin-top: 0;
+}
+
+a {
+    color: #1f6feb;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+    background: #fff;
+    margin-top: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+    padding: 10px 12px;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid #e5e9ee;
+}
+
+th {
+    background: #eef2f7;
+    font-size: 0.9rem;
+}
+
+tr:hover td {
+    background: #fafbfc;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    background: #1f6feb;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+form[action$="/xoa"] button {
+    background: #d93025;
+}
+
+a[href*="/them"] {
+    display: inline-block;
+    background: #1f6feb;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin: 8px 0;
+}
+
+td a[href$="/sua"] {
+    margin-right: 8px;
+}
