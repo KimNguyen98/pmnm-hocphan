@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Sách</h2>
+
+<form method="get" action="{{ url_for('sach_list') }}">
+    Lọc theo danh mục:
+    <select name="danh_muc" onchange="this.form.submit()">
+        <option value="">Tất cả</option>
+        {% for dm in ds_dm %}
+        <option value="{{ dm.id }}" {{ 'selected' if dm_id == dm.id else '' }}>{{ dm.ten }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>ID</th><th>Tiêu đề</th><th>Tác giả</th><th>Giá</th><th>Số lượng</th><th>Danh mục</th></tr>
+    {% for s in ds %}
+    <tr>
+        <td>{{ s.id }}</td>
+        <td>{{ s.tieu_de }}</td>
+        <td>{{ s.tac_gia }}</td>
+        <td>{{ "{:,.0f}".format(s.gia) }}</td>
+        <td>{{ s.so_luong }}</td>
+        <td>{{ s.danh_muc.ten }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6">Chưa có sách nào</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
