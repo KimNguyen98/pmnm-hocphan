@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///books.db"
@@ -33,6 +34,10 @@ def dashboard():
         "dashboard.html",
         so_danh_muc=DanhMuc.query.count(),
         so_sach=Sach.query.count(),
+        ton_kho=db.session.query(func.coalesce(func.sum(Sach.so_luong), 0)).scalar(),
+        gia_tri_kho=db.session.query(
+            func.coalesce(func.sum(Sach.gia * Sach.so_luong), 0)
+        ).scalar(),
     )
 
 @app.route("/danh-muc")
