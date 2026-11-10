@@ -13,7 +13,8 @@
     <h1>Quản lý sách</h1>
     <nav>
         <a href="{{ url_for('dashboard') }}">Dashboard</a> |
-        <a href="{{ url_for('danh_muc_list') }}">Danh mục</a>
+        <a href="{{ url_for('danh_muc_list') }}">Danh mục</a> |
+        <a href="{{ url_for('sach_list') }}">Sách</a>
     </nav>
     <hr>
     {% for loai, noi_dung in get_flashed_messages(with_categories=true) %}
