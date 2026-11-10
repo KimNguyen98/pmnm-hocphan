@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-<p>Số danh mục: {{ so_danh_muc }}</p>
-<p>Số sách: {{ so_sach }}</p>
+<h2>Dashboard</h2>
+<table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>Số danh mục</th><td>{{ so_danh_muc }}</td></tr>
+    <tr><th>Số đầu sách</th><td>{{ so_sach }}</td></tr>
+    <tr><th>Tổng số cuốn trong kho</th><td>{{ ton_kho }}</td></tr>
+    <tr><th>Tổng giá trị kho</th><td>{{ "{:,.0f}".format(gia_tri_kho) }}</td></tr>
+</table>
 {% endblock %}
