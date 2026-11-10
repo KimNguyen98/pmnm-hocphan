@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>Dashboard</h2>
-<table border="1" cellpadding="6" cellspacing="0">
-    <tr><th>Số danh mục</th><td>{{ so_danh_muc }}</td></tr>
-    <tr><th>Số đầu sách</th><td>{{ so_sach }}</td></tr>
-    <tr><th>Tổng số cuốn trong kho</th><td>{{ ton_kho }}</td></tr>
-    <tr><th>Tổng giá trị kho</th><td>{{ "{:,.0f}".format(gia_tri_kho) }}</td></tr>
-</table>
+<div class="the-thong-ke">
+    <div class="the"><span>Số danh mục</span><strong>{{ so_danh_muc }}</strong></div>
+    <div class="the"><span>Số đầu sách</span><strong>{{ so_sach }}</strong></div>
+    <div class="the"><span>Số cuốn trong kho</span><strong>{{ ton_kho }}</strong></div>
+    <div class="the"><span>Giá trị kho</span><strong>{{ "{:,.0f}".format(gia_tri_kho) }}</strong></div>
+</div>
 
 <h3>Thống kê theo danh mục</h3>
 <table border="1" cellpadding="6" cellspacing="0">
