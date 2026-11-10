@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Danh mục sách</h2>
+<a href="{{ url_for('danh_muc_them') }}">+ Thêm danh mục</a>
+<table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>ID</th><th>Tên</th><th>Mô tả</th><th>Số sách</th><th>Thao tác</th></tr>
+    {% for dm in ds %}
+    <tr>
+        <td>{{ dm.id }}</td>
+        <td>{{ dm.ten }}</td>
+        <td>{{ dm.mo_ta }}</td>
+        <td>{{ dm.sach|length }}</td>
+        <td>
+            <a href="{{ url_for('danh_muc_sua', id=dm.id) }}">Sửa</a>
+            <form method="post" action="{{ url_for('danh_muc_xoa', id=dm.id) }}"
+                  style="display:inline" onsubmit="return confirm('Xóa danh mục này?')">
+                <button type="submit">Xóa</button>
+            </form>
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">Chưa có danh mục nào</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

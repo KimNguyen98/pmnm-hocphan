@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ 'Sửa' if dm else 'Thêm' }} danh mục</h2>
+<form method="post">
+    <p>Tên: <input name="ten" value="{{ dm.ten if dm else '' }}" required></p>
+    <p>Mô tả: <input name="mo_ta" value="{{ dm.mo_ta if dm and dm.mo_ta else '' }}"></p>
+    <button type="submit">Lưu</button>
+    <a href="{{ url_for('danh_muc_list') }}">Hủy</a>
+</form>
+{% endblock %}
