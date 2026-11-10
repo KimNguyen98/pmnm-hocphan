@@ -80,5 +80,26 @@ def danh_muc_xoa(id):
     return redirect(url_for("danh_muc_list"))
 
 
+
+def doc_form_sach():
+    return {
+        "tieu_de": request.form["tieu_de"].strip(),
+        "tac_gia": request.form["tac_gia"].strip(),
+        "gia": float(request.form["gia"] or 0),
+        "so_luong": int(request.form["so_luong"] or 0),
+        "danh_muc_id": int(request.form["danh_muc_id"]),
+    }
+
+@app.route("/sach")
+def sach_list():
+    dm_id = request.args.get("danh_muc", type=int)
+    q = Sach.query
+    if dm_id:
+        q = q.filter_by(danh_muc_id=dm_id)
+    ds = q.order_by(Sach.id).all()
+    ds_dm = DanhMuc.query.order_by(DanhMuc.ten).all()
+    return render_template("sach/danh_sach.html", ds=ds, ds_dm=ds_dm, dm_id=dm_id)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
