@@ -21,4 +21,20 @@
     <tr><td colspan="3">Chưa có danh mục nào</td></tr>
     {% endfor %}
 </table>
+
+<h3>Sách mới thêm</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>Tiêu đề</th><th>Tác giả</th><th>Danh mục</th><th>Số lượng</th></tr>
+    {% for s in sach_moi %}
+    <tr>
+        <td>{{ s.tieu_de }}</td>
+        <td>{{ s.tac_gia }}</td>
+        <td>{{ s.danh_muc.ten }}</td>
+        <td>{{ s.so_luong }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">Chưa có sách nào</td></tr>
+    {% endfor %}
+</table>
+
 {% endblock %}
