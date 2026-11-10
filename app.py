@@ -136,5 +136,32 @@ def sach_them():
         return redirect(url_for("sach_list", danh_muc=du_lieu["danh_muc_id"]))
     return render_template("sach/form.html", s=None, ds_dm=ds_dm, dm_id=dm_id)
 
+
+# Sửa sách
+
+@app.route("/sach/<int:id>/sua", methods=["GET", "POST"])
+def sach_sua(id):
+    s = db.get_or_404(Sach, id)
+    ds_dm = DanhMuc.query.order_by(DanhMuc.ten).all()
+    if request.method == "POST":
+        try:
+            du_lieu = doc_form_sach()
+        except ValueError:
+            flash("Giá và số lượng phải là số", "loi")
+            return render_template("sach/form.html", s=s, ds_dm=ds_dm, dm_id=None)
+        if not du_lieu["tieu_de"]:
+            flash("Tiêu đề không được để trống", "loi")
+            return render_template("sach/form.html", s=s, ds_dm=ds_dm, dm_id=None)
+        for khoa, gia_tri in du_lieu.items():
+            setattr(s, khoa, gia_tri)
+        db.session.commit()
+        flash("Đã cập nhật sách", "ok")
+        return redirect(url_for("sach_list", danh_muc=s.danh_muc_id))
+    return render_template("sach/form.html", s=s, ds_dm=ds_dm, dm_id=None)
+
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
