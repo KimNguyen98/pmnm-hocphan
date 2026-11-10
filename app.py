@@ -160,7 +160,16 @@ def sach_sua(id):
     return render_template("sach/form.html", s=s, ds_dm=ds_dm, dm_id=None)
 
 
+# Xóa sách
 
+@app.route("/sach/<int:id>/xoa", methods=["POST"])
+def sach_xoa(id):
+    s = db.get_or_404(Sach, id)
+    dm_id = s.danh_muc_id
+    db.session.delete(s)
+    db.session.commit()
+    flash("Đã xóa sách", "ok")
+    return redirect(url_for("sach_list", danh_muc=dm_id))
 
 
 if __name__ == "__main__":
