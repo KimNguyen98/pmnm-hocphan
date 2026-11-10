@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
+    <head>
     <meta charset="UTF-8">
     <title>{% block title %}Quản lý sách{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+</head>
+
 <body>
     <h1>Quản lý sách</h1>
+    <nav>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> |
+        <a href="{{ url_for('danh_muc_list') }}">Danh mục</a>
+    </nav>
+    <hr>
+    {% for loai, noi_dung in get_flashed_messages(with_categories=true) %}
+    <p class="{{loai}}">{{ noi_dung }}</p>
+    {% endfor %}
     {% block content %}{% endblock %}
 </body>
+
 </html>
