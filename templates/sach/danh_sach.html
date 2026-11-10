@@ -15,7 +15,7 @@
 <p><a href="{{ url_for('sach_them', danh_muc=dm_id) }}">+ Thêm sách</a></p>
 
 <table border="1" cellpadding="6" cellspacing="0">
-    <tr><th>ID</th><th>Tiêu đề</th><th>Tác giả</th><th>Giá</th><th>Số lượng</th><th>Danh mục</th></tr>
+    <tr><th>ID</th><th>Tiêu đề</th><th>Tác giả</th><th>Giá</th><th>Số lượng</th><th>Danh mục</th><th>Thao tác</th></tr>
     {% for s in ds %}
     <tr>
         <td>{{ s.id }}</td>
@@ -24,9 +24,10 @@
         <td>{{ "{:,.0f}".format(s.gia) }}</td>
         <td>{{ s.so_luong }}</td>
         <td>{{ s.danh_muc.ten }}</td>
+        <td><a href="{{ url_for('sach_sua', id=s.id) }}">Sửa</a></td>
     </tr>
     {% else %}
-    <tr><td colspan="6">Chưa có sách nào</td></tr>
+    <tr><td colspan="7">Chưa có sách nào</td></tr>
     {% endfor %}
 </table>
 {% endblock %}
