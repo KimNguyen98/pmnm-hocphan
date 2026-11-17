@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ 'Sửa' if s else 'Thêm' }} sách</h2>
+<form method="post">
+    <p>Tiêu đề: <input name="tieu_de" value="{{ s.tieu_de if s else '' }}" required></p>
+    <p>Tác giả: <input name="tac_gia" value="{{ s.tac_gia if s and s.tac_gia else '' }}"></p>
+    <p>Giá: <input name="gia" type="number" min="0" step="any" value="{{ s.gia if s else 0 }}"></p>
+    <p>Số lượng: <input name="so_luong" type="number" min="0" value="{{ s.so_luong if s else 0 }}"></p>
+    <p>Danh mục:
+        <select name="danh_muc_id" required>
+            {% for dm in ds_dm %}
+            <option value="{{ dm.id }}"
+                {{ 'selected' if (s and s.danh_muc_id == dm.id) or (not s and dm_id == dm.id) else '' }}>
+                {{ dm.ten }}
+            </option>
+            {% endfor %}
+        </select>
+    </p>
+    <button type="submit">Lưu</button>
+    <a href="{{ url_for('sach_list') }}">Hủy</a>
+</form>
+{% endblock %}
