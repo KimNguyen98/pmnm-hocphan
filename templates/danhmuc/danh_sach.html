@@ -9,7 +9,7 @@
         <td>{{ dm.id }}</td>
         <td>{{ dm.ten }}</td>
         <td>{{ dm.mo_ta }}</td>
-        <td>{{ dm.sach|length }}</td>
+        <td><a href="{{ url_for('sach_list') }}">Sách</a></td>
         <td>
             <a href="{{ url_for('danh_muc_sua', id=dm.id) }}">Sửa</a>
             <form method="post" action="{{ url_for('danh_muc_xoa', id=dm.id) }}"
