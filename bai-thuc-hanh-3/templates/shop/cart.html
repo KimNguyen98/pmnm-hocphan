@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cover, csrf_input with context %}
+{% block title %}Giỏ hàng{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Giỏ hàng</h1>
+{% if items %}
+<div class="table-responsive">
+<table class="table align-middle">
+  <thead><tr><th>Sách</th><th class="text-end">Đơn giá</th><th class="text-center">Số lượng</th><th class="text-end">Thành tiền</th><th></th></tr></thead>
+  <tbody>
+  {% for it in items %}
+    <tr>
+      <td>
+        <div class="d-flex align-items-center gap-3">
+          <div style="width:48px">{{ cover(it.sach, "sm") }}</div>
+          <a href="{{ url_for('shop.book_detail', id=it.sach.id) }}">{{ it.sach.tieu_de }}</a>
+        </div>
+      </td>
+      <td class="text-end">{{ it.sach.gia|vnd }}</td>
+      <td class="text-center">
+        <div class="d-inline-flex align-items-center gap-2">
+          <form method="post" action="{{ url_for('shop.cart_update', sach_id=it.sach.id) }}">
+            {{ csrf_input() }}<input type="hidden" name="action" value="minus">
+            <button class="btn btn-sm btn-outline-secondary" aria-label="Giảm">−</button>
+          </form>
+          <strong>{{ it.qty }}</strong>
+          <form method="post" action="{{ url_for('shop.cart_update', sach_id=it.sach.id) }}">
+            {{ csrf_input() }}<input type="hidden" name="action" value="plus">
+            <button class="btn btn-sm btn-outline-secondary" aria-label="Tăng" {{ 'disabled' if it.qty >= it.sach.so_luong }}>+</button>
+          </form>
+        </div>
+      </td>
+      <td class="text-end">{{ it.thanh_tien|vnd }}</td>
+      <td class="text-end">
+        <form method="post" action="{{ url_for('shop.cart_remove', sach_id=it.sach.id) }}">
+          {{ csrf_input() }}<button class="btn btn-sm btn-link text-danger">Xoá</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+  <tfoot><tr><th colspan="3" class="text-end">Tổng cộng</th><th class="text-end price">{{ tong|vnd }}</th><th></th></tr></tfoot>
+</table>
+</div>
+<div class="d-flex justify-content-between">
+  <form method="post" action="{{ url_for('shop.cart_clear') }}" onsubmit="return confirm('Xoá toàn bộ giỏ hàng?')">
+    {{ csrf_input() }}<button class="btn btn-outline-danger">Xoá giỏ hàng</button>
+  </form>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary" href="{{ url_for('shop.books') }}">Mua thêm sách</a>
+    <a class="btn btn-primary" href="{{ url_for('shop.checkout') }}">Thanh toán</a>
+  </div>
+</div>
+{% else %}
+<div class="text-center text-muted py-5">
+  Giỏ hàng đang trống.
+  <div class="mt-2"><a class="btn btn-primary" href="{{ url_for('shop.books') }}">Chọn sách</a></div>
+</div>
+{% endif %}
+{% endblock %}

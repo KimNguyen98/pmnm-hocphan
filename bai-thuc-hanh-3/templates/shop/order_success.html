@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% from "_macros.html" import badge with context %}
+{% block title %}Đơn hàng #{{ order.id }}{% endblock %}
+{% block content %}
+<div class="text-center mb-4">
+  <h1 class="h3">Cảm ơn bạn, {{ order.ho_ten }}!</h1>
+  <p class="text-muted mb-0">Đơn hàng <strong>#{{ order.id }}</strong> đã được ghi nhận lúc {{ order.ngay_dat.strftime('%H:%M %d/%m/%Y') }}.</p>
+</div>
+<div class="row g-4">
+  <div class="col-md-5">
+    <div class="summary">
+      <h2 class="h6">Thông tin nhận hàng</h2>
+      <p class="mb-1">{{ order.ho_ten }} · {{ order.dien_thoai }}</p>
+      <p class="mb-1">{{ order.dia_chi }}</p>
+      <p class="mb-1">{{ 'Tiền mặt khi nhận hàng' if order.phuong_thuc == 'cod' else 'Chuyển khoản' }}</p>
+      {% if order.ghi_chu %}<p class="mb-1 text-muted">Ghi chú: {{ order.ghi_chu }}</p>{% endif %}
+      <p class="mb-0 mt-2">Trạng thái: {{ badge(order.trang_thai) }}</p>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <table class="table">
+      <thead><tr><th>Sách</th><th class="text-center">SL</th><th class="text-end">Thành tiền</th></tr></thead>
+      <tbody>
+      {% for it in order.items %}
+        <tr><td>{{ it.ten_sach }}</td><td class="text-center">{{ it.so_luong }}</td><td class="text-end">{{ it.thanh_tien|vnd }}</td></tr>
+      {% endfor %}
+      </tbody>
+      <tfoot><tr><th colspan="2" class="text-end">Tổng cộng</th><th class="text-end price">{{ order.tong_tien|vnd }}</th></tr></tfoot>
+    </table>
+    <a class="btn btn-primary" href="{{ url_for('shop.books') }}">Tiếp tục mua sách</a>
+  </div>
+</div>
+{% endblock %}

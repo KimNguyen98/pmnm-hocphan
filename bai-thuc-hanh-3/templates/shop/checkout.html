@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field with context %}
+{% block title %}Thanh toán{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">Thanh toán</h1>
+<div class="row g-5">
+  <div class="col-lg-7">
+    <form method="post" novalidate>
+      {{ form.hidden_tag() }}
+      {{ field(form.ho_ten) }}
+      {{ field(form.dien_thoai) }}
+      {{ field(form.dia_chi) }}
+      <div class="mb-3">
+        <div class="form-label">{{ form.phuong_thuc.label.text }}</div>
+        {% for opt in form.phuong_thuc %}
+          <div class="form-check">{{ opt(class="form-check-input") }} {{ opt.label(class="form-check-label") }}</div>
+        {% endfor %}
+      </div>
+      {{ field(form.ghi_chu) }}
+      <button class="btn btn-primary" type="submit">Đặt hàng</button>
+      <a class="btn btn-link" href="{{ url_for('shop.cart') }}">Quay lại giỏ hàng</a>
+    </form>
+  </div>
+  <div class="col-lg-5">
+    <div class="summary">
+      <h2 class="h5">Đơn hàng của bạn</h2>
+      <ul class="list-unstyled mb-3">
+        {% for it in items %}
+        <li class="d-flex justify-content-between py-1">
+          <span>{{ it.sach.tieu_de }} × {{ it.qty }}</span><span>{{ it.thanh_tien|vnd }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="d-flex justify-content-between border-top pt-2"><strong>Tổng cộng</strong><strong class="price">{{ tong|vnd }}</strong></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

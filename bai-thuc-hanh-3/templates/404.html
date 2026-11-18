@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Không tìm thấy trang{% endblock %}
+{% block content %}
+<div class="text-center py-5">
+  <h1 class="h3">Không tìm thấy trang này</h1>
+  <p class="text-muted">Sách hoặc đơn hàng bạn tìm có thể đã bị xoá, hoặc đường dẫn chưa đúng.</p>
+  <a class="btn btn-primary" href="{{ url_for('shop.books') }}">Về danh sách sách</a>
+</div>
+{% endblock %}

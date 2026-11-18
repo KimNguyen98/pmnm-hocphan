@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cover, csrf_input with context %}
+{% block title %}Sách · Nhà sách Sông Hương{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+  <h1 class="h3 mb-0">Sách</h1>
+  <form class="d-flex gap-2" method="get" action="{{ url_for('shop.books') }}">
+    {% if dm_id %}<input type="hidden" name="danh_muc" value="{{ dm_id }}">{% endif %}
+    <input class="form-control" type="search" name="q" value="{{ q }}" placeholder="Tìm theo tên sách hoặc tác giả">
+    <button class="btn btn-primary" type="submit">Tìm</button>
+  </form>
+</div>
+
+<div class="d-flex flex-wrap gap-2 mb-4">
+  <a class="chip {{ 'active' if not dm_id }}" href="{{ url_for('shop.books', q=q or None) }}">Tất cả</a>
+  {% for dm in ds_dm %}
+    <a class="chip {{ 'active' if dm_id == dm.id }}" href="{{ url_for('shop.books', danh_muc=dm.id, q=q or None) }}">{{ dm.ten }}</a>
+  {% endfor %}
+</div>
+
+{% if ds_sach %}
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+  {% for s in ds_sach %}
+  <div class="col">
+    <div class="book-card h-100">
+      <a href="{{ url_for('shop.book_detail', id=s.id) }}">{{ cover(s) }}</a>
+      <div class="p-3 d-flex flex-column flex-grow-1">
+        <a class="book-title" href="{{ url_for('shop.book_detail', id=s.id) }}">{{ s.tieu_de }}</a>
+        <div class="text-muted small mb-2">{{ s.tac_gia or 'Chưa rõ tác giả' }}</div>
+        <div class="price mb-2">{{ s.gia|vnd }}</div>
+        <div class="mt-auto">
+          {% if s.so_luong > 0 %}
+          <form method="post" action="{{ url_for('shop.cart_add', sach_id=s.id) }}">
+            {{ csrf_input() }}
+            <input type="hidden" name="qty" value="1">
+            <button class="btn btn-primary btn-sm w-100" type="submit">Thêm vào giỏ</button>
+          </form>
+          {% else %}
+          <button class="btn btn-outline-secondary btn-sm w-100" disabled>Hết hàng</button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center text-muted py-5">
+  Không có sách nào khớp{% if q %} với “{{ q }}”{% endif %}.
+  <div class="mt-2"><a href="{{ url_for('shop.books') }}">Xem tất cả sách</a></div>
+</div>
+{% endif %}
+{% endblock %}

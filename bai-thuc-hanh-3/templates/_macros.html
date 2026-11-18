@@ -1,0 +1,60 @@
+{# Macro dùng chung. Import bằng: {% from "_macros.html" import ... with context %} #}
+
+{% macro csrf_input() %}
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+{% endmacro %}
+
+{% macro cover(s, size="md") %}
+  {% if s.anh_bia %}
+    <img class="cover cover-{{ size }}" src="{{ url_for('static', filename='uploads/' ~ s.anh_bia) }}" alt="Bìa sách {{ s.tieu_de }}">
+  {% else %}
+    <div class="cover cover-{{ size }} cover-ph cover-ph-{{ s.id % 5 }}" role="img" aria-label="Chưa có ảnh bìa: {{ s.tieu_de }}">
+      <span>{{ s.tieu_de }}</span>
+    </div>
+  {% endif %}
+{% endmacro %}
+
+{% macro badge(tt) %}
+{% set mau = {'cho_xac_nhan': 'warning text-dark', 'dang_giao': 'info text-dark', 'hoan_tat': 'success', 'da_huy': 'secondary'} %}
+<span class="badge text-bg-{{ mau.get(tt, 'secondary') }}">{{ TRANG_THAI.get(tt, tt) }}</span>
+{% endmacro %}
+
+{% macro field(f, rows=3) %}
+<div class="mb-3">
+  {{ f.label(class="form-label") }}
+  {% if f.type == 'TextAreaField' %}
+    {{ f(class="form-control" ~ (" is-invalid" if f.errors else ""), rows=rows) }}
+  {% elif f.type == 'SelectField' %}
+    {{ f(class="form-select" ~ (" is-invalid" if f.errors else "")) }}
+  {% elif f.type == 'FileField' %}
+    {{ f(class="form-control" ~ (" is-invalid" if f.errors else ""), accept=".jpg,.jpeg,.png,.webp") }}
+  {% else %}
+    {{ f(class="form-control" ~ (" is-invalid" if f.errors else "")) }}
+  {% endif %}
+  {% for e in f.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+</div>
+{% endmacro %}
+
+{% macro pager(p, endpoint) %}
+{% if p.pages > 1 %}
+  {% set args = request.args.to_dict() %}
+  {% set _ = args.pop('page', None) %}
+  <nav aria-label="Phân trang">
+    <ul class="pagination justify-content-center mb-0">
+      <li class="page-item {{ 'disabled' if not p.has_prev }}">
+        <a class="page-link" href="{{ url_for(endpoint, page=p.prev_num, **args) if p.has_prev else '#' }}">Trước</a>
+      </li>
+      {% for n in p.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if n %}
+          <li class="page-item {{ 'active' if n == p.page }}"><a class="page-link" href="{{ url_for(endpoint, page=n, **args) }}">{{ n }}</a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">…</span></li>
+        {% endif %}
+      {% endfor %}
+      <li class="page-item {{ 'disabled' if not p.has_next }}">
+        <a class="page-link" href="{{ url_for(endpoint, page=p.next_num, **args) if p.has_next else '#' }}">Sau</a>
+      </li>
+    </ul>
+  </nav>
+{% endif %}
+{% endmacro %}

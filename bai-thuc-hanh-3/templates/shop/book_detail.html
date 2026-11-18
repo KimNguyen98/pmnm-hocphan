@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cover, csrf_input with context %}
+{% block title %}{{ s.tieu_de }}{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('shop.books') }}">Sách</a></li>
+    <li class="breadcrumb-item"><a href="{{ url_for('shop.books', danh_muc=s.danh_muc_id) }}">{{ s.danh_muc.ten }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ s.tieu_de }}</li>
+  </ol>
+</nav>
+
+<div class="row g-5">
+  <div class="col-md-4">{{ cover(s, "lg") }}</div>
+  <div class="col-md-8">
+    <h1 class="h2">{{ s.tieu_de }}</h1>
+    <p class="text-muted">{{ s.tac_gia or 'Chưa rõ tác giả' }}</p>
+    <div class="price price-lg mb-3">{{ s.gia|vnd }}</div>
+
+    <dl class="row meta">
+      <dt class="col-sm-3">Danh mục</dt><dd class="col-sm-9">{{ s.danh_muc.ten }}</dd>
+      <dt class="col-sm-3">Nhà xuất bản</dt><dd class="col-sm-9">{{ s.nxb or '—' }}</dd>
+      <dt class="col-sm-3">Năm xuất bản</dt><dd class="col-sm-9">{{ s.nam or '—' }}</dd>
+      <dt class="col-sm-3">Tình trạng</dt>
+      <dd class="col-sm-9">
+        {% if s.so_luong > 0 %}Còn {{ s.so_luong }} cuốn{% else %}<span class="text-danger">Hết hàng</span>{% endif %}
+      </dd>
+    </dl>
+
+    {% if s.so_luong > 0 %}
+    <form method="post" action="{{ url_for('shop.cart_add', sach_id=s.id) }}" class="mb-2">
+      {{ csrf_input() }}
+      <div class="d-flex align-items-center gap-3">
+        <div class="input-group qty-group" style="width: 150px;" data-max="{{ s.so_luong - da_co }}">
+          <button class="btn btn-outline-secondary" type="button" data-step="-1" aria-label="Giảm">−</button>
+          <input class="form-control text-center" type="number" name="qty" value="1" min="1" max="{{ s.so_luong - da_co }}" aria-label="Số lượng">
+          <button class="btn btn-outline-secondary" type="button" data-step="1" aria-label="Tăng">+</button>
+        </div>
+        <button class="btn btn-primary" type="submit" {{ 'disabled' if s.so_luong - da_co <= 0 }}>Thêm vào giỏ</button>
+      </div>
+    </form>
+    {% if da_co %}<div class="small text-muted">Bạn đã có {{ da_co }} cuốn trong giỏ.
+      <a href="{{ url_for('shop.cart') }}">Xem giỏ hàng</a></div>{% endif %}
+    {% else %}
+    <button class="btn btn-outline-secondary" disabled>Hết hàng</button>
+    {% endif %}
+
+    {% if s.mo_ta %}
+    <h2 class="h5 mt-4">Giới thiệu</h2>
+    <p class="prose">{{ s.mo_ta }}</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
