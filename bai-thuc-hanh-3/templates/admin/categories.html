@@ -1,0 +1,38 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import field, csrf_input with context %}
+{% block title %}Danh mục{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">Danh mục</h1>
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="summary">
+      <h2 class="h6">Thêm danh mục</h2>
+      <form method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {{ field(form.ten) }}
+        {{ field(form.mo_ta) }}
+        <button class="btn btn-primary" type="submit">Thêm danh mục</button>
+      </form>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <table class="table align-middle bg-white">
+      <thead><tr><th>Tên</th><th>Mô tả</th><th class="text-center">Số sách</th><th></th></tr></thead>
+      <tbody>
+      {% for dm in ds %}
+        <tr>
+          <td>{{ dm.ten }}</td><td class="text-muted">{{ dm.mo_ta or '' }}</td><td class="text-center">{{ dm.so_sach }}</td>
+          <td class="text-end">
+            <form method="post" action="{{ url_for('admin.category_delete', id=dm.id) }}" onsubmit="return confirm('Xoá danh mục này?')">
+              {{ csrf_input() }}<button class="btn btn-sm btn-outline-danger">Xoá</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4" class="text-muted">Chưa có danh mục nào. Hãy thêm danh mục đầu tiên ở bên trái.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

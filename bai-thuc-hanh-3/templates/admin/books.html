@@ -1,0 +1,49 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import cover, pager, csrf_input with context %}
+{% block title %}Sách{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Quản lý sách</h1>
+  <a class="btn btn-primary" href="{{ url_for('admin.book_new') }}">Thêm sách</a>
+</div>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-4">
+    <select class="form-select" name="danh_muc" aria-label="Lọc theo danh mục">
+      <option value="">Tất cả danh mục</option>
+      {% for dm in ds_dm %}<option value="{{ dm.id }}" {{ 'selected' if dm_id == dm.id }}>{{ dm.ten }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="col-md-5"><input class="form-control" type="search" name="q" value="{{ q }}" placeholder="Tìm theo tên sách hoặc tác giả"></div>
+  <div class="col-md-3"><button class="btn btn-outline-secondary w-100">Lọc</button></div>
+</form>
+
+{% if pagination.items %}
+<div class="table-responsive">
+<table class="table table-sm align-middle bg-white">
+  <thead><tr><th></th><th>Tiêu đề</th><th>Danh mục</th><th class="text-end">Giá</th><th class="text-center">Tồn</th><th></th></tr></thead>
+  <tbody>
+  {% for s in pagination.items %}
+    <tr>
+      <td class="thumb">{{ cover(s, "sm") }}</td>
+      <td>{{ s.tieu_de }}<div class="small text-muted">{{ s.tac_gia or '' }}</div></td>
+      <td>{{ s.danh_muc.ten }}</td>
+      <td class="text-end">{{ s.gia|vnd }}</td>
+      <td class="text-center">{% if s.so_luong == 0 %}<span class="badge text-bg-danger">Hết</span>{% else %}{{ s.so_luong }}{% endif %}</td>
+      <td class="text-end text-nowrap">
+        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.book_edit', id=s.id) }}">Sửa</a>
+        <form class="d-inline" method="post" action="{{ url_for('admin.book_delete', id=s.id) }}" onsubmit="return confirm('Xoá sách này?')">
+          {{ csrf_input() }}<button class="btn btn-sm btn-outline-danger">Xoá</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<div class="text-muted small mb-2">{{ pagination.total }} cuốn · trang {{ pagination.page }}/{{ pagination.pages }}</div>
+{{ pager(pagination, 'admin.books') }}
+{% else %}
+<p class="text-muted">Không có sách nào khớp bộ lọc.</p>
+{% endif %}
+{% endblock %}

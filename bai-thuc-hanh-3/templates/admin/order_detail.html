@@ -1,0 +1,53 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import badge, csrf_input with context %}
+{% block title %}Đơn #{{ order.id }}{% endblock %}
+{% block content %}
+<a class="small" href="{{ url_for('admin.orders') }}">← Danh sách đơn hàng</a>
+<h1 class="h3 mt-2 mb-4">Đơn #{{ order.id }} {{ badge(order.trang_thai) }}</h1>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <table class="table bg-white align-middle">
+      <thead><tr><th>Sách</th><th class="text-end">Đơn giá</th><th class="text-center">SL</th><th class="text-end">Thành tiền</th></tr></thead>
+      <tbody>
+      {% for it in order.items %}
+        <tr><td>{{ it.ten_sach }}</td><td class="text-end">{{ it.don_gia|vnd }}</td><td class="text-center">{{ it.so_luong }}</td><td class="text-end">{{ it.thanh_tien|vnd }}</td></tr>
+      {% endfor %}
+      </tbody>
+      <tfoot><tr><th colspan="3" class="text-end">Tổng cộng</th><th class="text-end price">{{ order.tong_tien|vnd }}</th></tr></tfoot>
+    </table>
+
+    <div class="summary">
+      <h2 class="h6">Khách hàng</h2>
+      <p class="mb-1">{{ order.ho_ten }} · {{ order.dien_thoai }}</p>
+      <p class="mb-1">{{ order.dia_chi }}</p>
+      <p class="mb-1">{{ 'Tiền mặt khi nhận hàng' if order.phuong_thuc == 'cod' else 'Chuyển khoản' }}</p>
+      {% if order.ghi_chu %}<p class="mb-0 text-muted">Ghi chú: {{ order.ghi_chu }}</p>{% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <h2 class="h6">Lịch sử trạng thái</h2>
+    <ul class="timeline">
+      {% for h in order.history %}
+      <li>{{ badge(h.trang_thai) }} <span class="small text-muted">{{ h.thoi_diem.strftime('%d/%m/%Y %H:%M') }}</span></li>
+      {% endfor %}
+    </ul>
+
+    {% if chuyen_duoc %}
+    <h2 class="h6 mt-3">Cập nhật trạng thái</h2>
+    <div class="d-flex gap-2">
+      {% for key in chuyen_duoc %}
+      <form method="post" action="{{ url_for('admin.order_status', id=order.id) }}"
+            {% if key == 'da_huy' %}onsubmit="return confirm('Huỷ đơn này? Số lượng sách sẽ được hoàn lại kho.')"{% endif %}>
+        {{ csrf_input() }}<input type="hidden" name="trang_thai" value="{{ key }}">
+        <button class="btn {{ 'btn-outline-danger' if key == 'da_huy' else 'btn-primary' }}">{{ 'Huỷ đơn' if key == 'da_huy' else 'Chuyển sang: ' ~ TRANG_THAI[key] }}</button>
+      </form>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted small mt-3">Đơn đã {{ TRANG_THAI[order.trang_thai]|lower }}, không thể đổi trạng thái.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

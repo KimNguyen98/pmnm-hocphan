@@ -1,0 +1,26 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import field, cover with context %}
+{% block title %}{{ 'Sửa sách' if s else 'Thêm sách' }}{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">{{ 'Sửa sách' if s else 'Thêm sách' }}</h1>
+<form method="post" enctype="multipart/form-data" novalidate style="max-width: 720px">
+  {{ form.hidden_tag() }}
+  {{ field(form.tieu_de) }}
+  <div class="row">
+    <div class="col-md-6">{{ field(form.tac_gia) }}</div>
+    <div class="col-md-6">{{ field(form.danh_muc_id) }}</div>
+    <div class="col-md-6">{{ field(form.nxb) }}</div>
+    <div class="col-md-6">{{ field(form.nam) }}</div>
+    <div class="col-md-6">{{ field(form.gia) }}</div>
+    <div class="col-md-6">{{ field(form.so_luong) }}</div>
+  </div>
+  {{ field(form.mo_ta, rows=5) }}
+  {% if s and s.anh_bia %}
+  <div class="mb-2" style="width:100px">{{ cover(s, "sm") }}</div>
+  <div class="small text-muted mb-1">Chọn ảnh mới nếu muốn thay ảnh bìa hiện tại.</div>
+  {% endif %}
+  {{ field(form.anh_bia) }}
+  <button class="btn btn-primary" type="submit">Lưu sách</button>
+  <a class="btn btn-link" href="{{ url_for('admin.books') }}">Huỷ</a>
+</form>
+{% endblock %}
