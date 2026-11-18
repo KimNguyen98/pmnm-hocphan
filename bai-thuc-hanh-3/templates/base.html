@@ -15,13 +15,26 @@
     <nav class="navbar navbar-expand-lg shop-nav">
         <div class="container">
             <a class="navbar-brand brand" href="{{ url_for('shop.books') }}">Nhà sách Sông Hương</a>
-            <div class="navbar-nav ms-auto flex-row gap-3">
+            <div class="navbar-nav ms-auto flex-row flex-wrap align-items-center gap-3">
                 <a class="nav-link" href="{{ url_for('shop.books') }}">Sách</a>
                 <a class="nav-link" href="{{ url_for('shop.cart') }}">
                     Giỏ hàng
                     {% if cart_count > 0 %}<span class="badge cart-badge">{{ cart_count }}</span>{% endif %}
                 </a>
-                <a class="nav-link nav-admin" href="{{ url_for('admin.dashboard') }}">Quản trị</a>
+                {% if current_user %}
+                    <a class="nav-link" href="{{ url_for('shop.my_orders') }}">Đơn của tôi</a>
+                    {% if current_user.la_admin %}
+                    <a class="nav-link nav-admin" href="{{ url_for('admin.dashboard') }}">Quản trị</a>
+                    {% endif %}
+                    <span class="nav-link nav-user">{{ current_user.ho_ten }}</span>
+                    <form method="post" action="{{ url_for('auth.logout') }}" class="d-inline">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button class="nav-link btn btn-link" type="submit">Đăng xuất</button>
+                    </form>
+                {% else %}
+                    <a class="nav-link" href="{{ url_for('auth.login') }}">Đăng nhập</a>
+                    <a class="nav-link" href="{{ url_for('auth.register') }}">Đăng ký</a>
+                {% endif %}
             </div>
         </div>
     </nav>

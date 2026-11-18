@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import (StringField, FloatField, IntegerField, TextAreaField,
-                     SelectField, RadioField, SubmitField)
+                     SelectField, RadioField, SubmitField, PasswordField)
 from wtforms.validators import (DataRequired, InputRequired, NumberRange,
-                                Length, Regexp, Optional)
+                                Length, Regexp, Optional, EqualTo, ValidationError)
 
 
 class SachForm(FlaskForm):
@@ -43,3 +43,27 @@ class CheckoutForm(FlaskForm):
     ], default="cod")
     ghi_chu = TextAreaField("Ghi chú", validators=[Optional()])
     submit = SubmitField("Đặt hàng")
+
+class LoginForm(FlaskForm):
+    ten_dang_nhap = StringField("Tên đăng nhập", validators=[DataRequired(), Length(max=50)])
+    mat_khau = PasswordField("Mật khẩu", validators=[DataRequired()])
+    submit = SubmitField("Đăng nhập")
+
+
+class RegisterForm(FlaskForm):
+    ho_ten = StringField("Họ tên", validators=[DataRequired(), Length(min=2, max=100)])
+    ten_dang_nhap = StringField("Tên đăng nhập", validators=[
+        DataRequired(), Length(min=3, max=50),
+        Regexp(r"^[A-Za-z0-9_.]+$",
+               message="Chỉ gồm chữ không dấu, số, dấu chấm và dấu gạch dưới")
+    ])
+    mat_khau = PasswordField("Mật khẩu", validators=[DataRequired(), Length(min=6, max=128)])
+    nhap_lai = PasswordField("Nhập lại mật khẩu", validators=[
+        DataRequired(), EqualTo("mat_khau", message="Mật khẩu nhập lại không khớp")
+    ])
+    submit = SubmitField("Đăng ký")
+
+    def validate_ten_dang_nhap(self, field):
+        from models import User
+        if User.query.filter_by(ten_dang_nhap=field.data.strip().lower()).first():
+            raise ValidationError("Tên đăng nhập đã được dùng.")

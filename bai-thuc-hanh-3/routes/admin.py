@@ -1,20 +1,13 @@
-#Dashboard: đếm đơn chờ xác nhận, doanh thu tháng này (chỉ tính đơn đã hoàn tất), tổng đầu sách, sách sắp hết (còn từ 1 đến 5 cuốn) và 5 đơn mới nhất.
-#Sách: lọc theo danh mục, tìm theo tên hoặc tác giả, phân trang 10 cuốn mỗi trang. Khi sửa sách có ảnh mới, ảnh cũ được xoá. Sách đã nằm trong đơn hàng thì không xoá được.
-#Danh mục: chặn trùng tên (không phân biệt hoa thường) và chặn xoá danh mục còn sách.
-#Đơn hàng: chỉ cho chuyển trạng thái theo đúng thứ tự (chờ xác nhận → đang giao → hoàn tất). Huỷ đơn sẽ hoàn lại số lượng vào kho.
-
-
-
 import os
 import uuid
 from datetime import datetime
 
 from flask import (Blueprint, render_template, request, redirect,
-                   url_for, flash, current_app)
+                   url_for, flash, current_app, g, abort)
 from sqlalchemy import func, cast, String
 
 from extensions import db
-from models import Sach, DanhMuc, Order, OrderHistory, TRANG_THAI
+from models import Sach, DanhMuc, Order, OrderHistory, User, TRANG_THAI
 from forms import SachForm, DanhMucForm
 
 admin_bp = Blueprint("admin", __name__)
@@ -28,6 +21,16 @@ CHUYEN_TRANG_THAI = {
     "hoan_tat": [],
     "da_huy": [],
 }
+
+
+@admin_bp.before_request
+def chi_cho_admin():
+    """Chạy trước MỌI route trong /admin: chưa đăng nhập thì chuyển đi đăng nhập, không phải admin thì 403."""
+    if not g.user:
+        flash("Vui lòng đăng nhập để tiếp tục.", "error")
+        return redirect(url_for("auth.login", next=request.path))
+    if not g.user.la_admin:
+        abort(403)
 
 
 # ---- Ảnh bìa ---------------------------------------------------------------
@@ -242,3 +245,35 @@ def order_status(id):
     db.session.commit()
     flash(f"Đã chuyển đơn #{order.id} sang: {TRANG_THAI[new]}.", "success")
     return redirect(url_for("admin.order_detail", id=id))
+
+
+# ⑫ Quản lý người dùng -----------------------------------------------------
+@admin_bp.route("/users")
+def users():
+    ds = User.query.order_by(User.ngay_tao.desc()).all()
+    return render_template("admin/users.html", ds=ds)
+
+
+@admin_bp.route("/users/<int:id>/role", methods=["POST"])
+def user_role(id):
+    u = db.get_or_404(User, id)
+    if u.id == g.user.id:
+        flash("Bạn không thể đổi vai trò của chính mình.", "error")
+    else:
+        u.vai_tro = "khach" if u.la_admin else "admin"
+        db.session.commit()
+        flash(f"Đã đổi vai trò của {u.ten_dang_nhap} thành: "
+              f"{'Quản trị viên' if u.la_admin else 'Khách hàng'}.", "success")
+    return redirect(url_for("admin.users"))
+
+
+@admin_bp.route("/users/<int:id>/active", methods=["POST"])
+def user_active(id):
+    u = db.get_or_404(User, id)
+    if u.id == g.user.id:
+        flash("Bạn không thể khoá chính mình.", "error")
+    else:
+        u.hoat_dong = not u.hoat_dong
+        db.session.commit()
+        flash(f"Đã {'mở khoá' if u.hoat_dong else 'khoá'} tài khoản {u.ten_dang_nhap}.", "success")
+    return redirect(url_for("admin.users"))

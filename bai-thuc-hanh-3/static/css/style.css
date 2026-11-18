@@ -12,65 +12,298 @@
   --bs-link-color: var(--river);
   --bs-link-hover-color: var(--river-dark);
 }
-h1, h2, h3, .brand, .book-title { font-family: "Noto Serif", Georgia, serif; }
-.btn-primary { --bs-btn-bg: var(--river); --bs-btn-border-color: var(--river);
-  --bs-btn-hover-bg: var(--river-dark); --bs-btn-hover-border-color: var(--river-dark);
-  --bs-btn-active-bg: var(--river-dark); --bs-btn-disabled-bg: var(--river); }
-:focus-visible { outline: 3px solid var(--hue); outline-offset: 2px; }
+
+h1,
+h2,
+h3,
+.brand,
+.book-title {
+  font-family: "Noto Serif", Georgia, serif;
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--river);
+  --bs-btn-border-color: var(--river);
+  --bs-btn-hover-bg: var(--river-dark);
+  --bs-btn-hover-border-color: var(--river-dark);
+  --bs-btn-active-bg: var(--river-dark);
+  --bs-btn-disabled-bg: var(--river);
+}
+
+:focus-visible {
+  outline: 3px solid var(--hue);
+  outline-offset: 2px;
+}
 
 /* Thanh điều hướng & chân trang */
-.shop-nav { background: var(--river); }
-.shop-nav .nav-link, .shop-nav .brand { color: #fff; }
-.shop-nav .nav-link:hover { color: #d9ecee; }
-.shop-nav .nav-admin { opacity: .7; }
-.brand { font-weight: 700; font-size: 1.2rem; text-decoration: none; }
-.cart-badge { background: var(--hue); color: #fff; }
-.shop-footer { border-top: 1px solid var(--line); color: #5d6c70; padding: 1.5rem 0; margin-top: 3rem; font-size: .9rem; }
+.shop-nav {
+  background: var(--river);
+}
+
+.shop-nav .nav-link,
+.shop-nav .brand {
+  color: #fff;
+}
+
+.shop-nav .nav-link:hover {
+  color: #d9ecee;
+}
+
+.shop-nav .nav-admin {
+  opacity: .7;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+.cart-badge {
+  background: var(--hue);
+  color: #fff;
+}
+
+.shop-footer {
+  border-top: 1px solid var(--line);
+  color: #5d6c70;
+  padding: 1.5rem 0;
+  margin-top: 3rem;
+  font-size: .9rem;
+}
 
 /* Bộ lọc danh mục */
-.chip { padding: .3rem .9rem; border: 1px solid var(--line); border-radius: 999px; background: #fff;
-  color: var(--ink); text-decoration: none; font-size: .9rem; }
-.chip:hover { border-color: var(--river); }
-.chip.active { background: var(--river); border-color: var(--river); color: #fff; }
+.chip {
+  padding: .3rem .9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: .9rem;
+}
+
+.chip:hover {
+  border-color: var(--river);
+}
+
+.chip.active {
+  background: var(--river);
+  border-color: var(--river);
+  color: #fff;
+}
 
 /* Thẻ sách */
-.book-card { background: #fff; border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
-  display: flex; flex-direction: column; }
-.book-title { color: var(--ink); text-decoration: none; font-weight: 700; line-height: 1.3; margin-bottom: .25rem; }
-.book-title:hover { color: var(--river); }
-.price { color: var(--hue); font-weight: 600; }
-.price-lg { font-size: 1.6rem; }
-.meta dt { font-weight: 500; color: #5d6c70; }
-.prose { max-width: 62ch; line-height: 1.7; white-space: pre-line; }
-.summary { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 1.25rem; }
+.book-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-title {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: .25rem;
+}
+
+.book-title:hover {
+  color: var(--river);
+}
+
+.price {
+  color: var(--hue);
+  font-weight: 600;
+}
+
+.price-lg {
+  font-size: 1.6rem;
+}
+
+.meta dt {
+  font-weight: 500;
+  color: #5d6c70;
+}
+
+.prose {
+  max-width: 62ch;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.summary {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1.25rem;
+}
 
 /* Bìa sách: ảnh thật hoặc bìa giả khi chưa có ảnh */
-.cover { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; background: #e4e9e7; }
-.cover-sm { border-radius: 3px; }
-.cover-lg { border-radius: 4px; box-shadow: 0 6px 18px rgba(27, 42, 46, .18); }
-.cover-ph { display: flex; align-items: flex-end; padding: 12% 10%; color: #fff;
-  font-family: "Noto Serif", Georgia, serif; font-weight: 700; line-height: 1.2; font-size: .95rem; overflow: hidden; }
-.cover-sm.cover-ph { font-size: .4rem; padding: 6%; }
-.cover-lg.cover-ph { font-size: 1.5rem; }
-.cover-ph-0 { background: linear-gradient(160deg, #1f5a63, #153f46); }
-.cover-ph-1 { background: linear-gradient(160deg, #6a3f86, #46285c); }
-.cover-ph-2 { background: linear-gradient(160deg, #3d6b4f, #284a37); }
-.cover-ph-3 { background: linear-gradient(160deg, #8a5a2b, #5e3b18); }
-.cover-ph-4 { background: linear-gradient(160deg, #35506e, #22344a); }
+.cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  background: #e4e9e7;
+}
+
+.cover-sm {
+  border-radius: 3px;
+}
+
+.cover-lg {
+  border-radius: 4px;
+  box-shadow: 0 6px 18px rgba(27, 42, 46, .18);
+}
+
+.cover-ph {
+  display: flex;
+  align-items: flex-end;
+  padding: 12% 10%;
+  color: #fff;
+  font-family: "Noto Serif", Georgia, serif;
+  font-weight: 700;
+  line-height: 1.2;
+  font-size: .95rem;
+  overflow: hidden;
+}
+
+.cover-sm.cover-ph {
+  font-size: .4rem;
+  padding: 6%;
+}
+
+.cover-lg.cover-ph {
+  font-size: 1.5rem;
+}
+
+.cover-ph-0 {
+  background: linear-gradient(160deg, #1f5a63, #153f46);
+}
+
+.cover-ph-1 {
+  background: linear-gradient(160deg, #6a3f86, #46285c);
+}
+
+.cover-ph-2 {
+  background: linear-gradient(160deg, #3d6b4f, #284a37);
+}
+
+.cover-ph-3 {
+  background: linear-gradient(160deg, #8a5a2b, #5e3b18);
+}
+
+.cover-ph-4 {
+  background: linear-gradient(160deg, #35506e, #22344a);
+}
 
 /* Trang quản trị */
-.admin-side { width: 230px; min-height: 100vh; background: var(--ink); color: #fff; flex-shrink: 0; }
-.admin-side a { display: block; color: #cfdada; text-decoration: none; padding: .5rem .75rem; border-radius: 4px; margin-bottom: .15rem; }
-.admin-side a:hover, .admin-side a.active { background: rgba(255,255,255,.1); color: #fff; }
-.stat { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 1rem 1.25rem; height: 100%; }
-.stat .num { font-family: "Noto Serif", serif; font-size: 1.7rem; font-weight: 700; }
-.timeline { list-style: none; padding-left: 1rem; border-left: 2px solid var(--line); }
-.timeline li { position: relative; padding: 0 0 1rem 1rem; }
-.timeline li::before { content: ""; position: absolute; left: -1.45rem; top: .4rem; width: 10px; height: 10px;
-  border-radius: 50%; background: var(--river); }
-.thumb { width: 40px; }
+.admin-side {
+  width: 230px;
+  min-height: 100vh;
+  background: var(--ink);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.admin-side a {
+  display: block;
+  color: #cfdada;
+  text-decoration: none;
+  padding: .5rem .75rem;
+  border-radius: 4px;
+  margin-bottom: .15rem;
+}
+
+.admin-side a:hover,
+.admin-side a.active {
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+}
+
+.stat {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  height: 100%;
+}
+
+.stat .num {
+  font-family: "Noto Serif", serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.timeline {
+  list-style: none;
+  padding-left: 1rem;
+  border-left: 2px solid var(--line);
+}
+
+.timeline li {
+  position: relative;
+  padding: 0 0 1rem 1rem;
+}
+
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: -1.45rem;
+  top: .4rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--river);
+}
+
+.thumb {
+  width: 40px;
+}
 
 @media (max-width: 767px) {
-  .admin-wrap { flex-direction: column; }
-  .admin-side { width: 100%; min-height: 0; }
+  .admin-wrap {
+    flex-direction: column;
+  }
+
+  .admin-side {
+    width: 100%;
+    min-height: 0;
+  }
+}
+
+/* Đăng nhập / đăng ký */
+.auth-box {
+  max-width: 420px;
+  margin: 2rem auto;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1.75rem;
+}
+
+.nav-user {
+  opacity: .85;
+}
+
+.shop-nav .btn-link {
+  text-decoration: none;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Nút đăng xuất trong menu quản trị */
+.side-logout {
+  color: #cfdada;
+  text-decoration: none;
+  width: 100%;
+}
+
+.side-logout:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, .1);
 }

@@ -1,4 +1,4 @@
-from flask import Flask, session, render_template
+from flask import Flask, session, render_template, g
 
 from extensions import db, migrate, csrf
 
@@ -16,17 +16,24 @@ def create_app():
     app.config.from_pyfile("config.py")
 
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate.init_app(app, db, render_as_batch=True)  # SQLite cần chế độ batch khi sửa bảng
     csrf.init_app(app)  # bảo vệ CSRF cho mọi form POST
 
     import models  # noqa: F401  (để Flask-Migrate nhận biết các bảng)
+    from permissions import load_user
 
     from routes.shop import shop_bp
     from routes.admin import admin_bp
+    from routes.auth import auth_bp
     app.register_blueprint(shop_bp)
+    app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp, url_prefix="/admin")
 
     app.jinja_env.filters["vnd"] = vnd
+
+    @app.before_request
+    def nap_nguoi_dung():
+        g.user = load_user()  # người đang đăng nhập (hoặc None)
 
     @app.context_processor
     def inject_globals():
@@ -34,7 +41,13 @@ def create_app():
         return {
             "cart_count": sum(item["qty"] for item in cart.values()),
             "TRANG_THAI": models.TRANG_THAI,
+            "VAI_TRO": models.VAI_TRO,
+            "current_user": g.get("user"),
         }
+
+    @app.errorhandler(403)
+    def forbidden(e):
+        return render_template("403.html"), 403
 
     @app.errorhandler(404)
     def not_found(e):

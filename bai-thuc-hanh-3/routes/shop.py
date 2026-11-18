@@ -1,13 +1,10 @@
-#Giỏ hàng lưu trong session dưới dạng {id_sách: {"qty": số lượng}}. Mỗi lần xem giỏ, hàm build_cart() đọc lại giá và tồn kho từ CSDL, nên giá luôn mới nhất.
-#Thêm vào giỏ từ chối khi hết hàng hoặc khi số lượng vượt tồn kho (tính cả số đã có trong giỏ).
-#Thanh toán kiểm tra lại tồn kho lần nữa lúc bấm đặt hàng. Khi đặt thành công, giá và tên sách được chụp lại vào OrderItem, kho bị trừ, và ghi dòng đầu tiên vào lịch sử trạng thái.
-
 from flask import (Blueprint, render_template, request, session,
-                   redirect, url_for, flash)
+                   redirect, url_for, flash, g, abort)
 
 from extensions import db
 from models import Sach, DanhMuc, Order, OrderItem, OrderHistory
 from forms import CheckoutForm
+from permissions import login_required
 
 shop_bp = Blueprint("shop", __name__)
 
@@ -119,8 +116,9 @@ def cart_clear():
     return redirect(url_for("shop.cart"))
 
 
-# ④ Thanh toán -------------------------------------------------------------
+# ④ Thanh toán (phải đăng nhập) -------------------------------------------
 @shop_bp.route("/checkout", methods=["GET", "POST"])
+@login_required
 def checkout():
     items, tong = build_cart()
     if not items:
@@ -128,6 +126,9 @@ def checkout():
         return redirect(url_for("shop.cart"))
 
     form = CheckoutForm()
+    if request.method == "GET":
+        form.ho_ten.data = g.user.ho_ten  # điền sẵn họ tên cho tiện
+
     if form.validate_on_submit():
         # Kiểm tra lại tồn kho ngay lúc đặt
         for it in items:
@@ -137,6 +138,7 @@ def checkout():
                 return redirect(url_for("shop.cart"))
 
         order = Order(
+            user_id=g.user.id,  # gắn đơn với tài khoản đang đăng nhập
             ho_ten=form.ho_ten.data.strip(),
             dien_thoai=form.dien_thoai.data.strip(),
             dia_chi=form.dia_chi.data.strip(),
@@ -165,8 +167,19 @@ def checkout():
     return render_template("shop/checkout.html", form=form, items=items, tong=tong)
 
 
-# ⑤ Đặt hàng thành công ----------------------------------------------------
+# ⑤ Xem một đơn: chỉ chủ đơn hoặc admin ------------------------------------
 @shop_bp.route("/orders/<int:id>")
+@login_required
 def order_success(id):
     order = db.get_or_404(Order, id)
+    if order.user_id != g.user.id and not g.user.la_admin:
+        abort(403)
     return render_template("shop/order_success.html", order=order)
+
+
+# ⑥ Đơn của tôi ------------------------------------------------------------
+@shop_bp.route("/my-orders")
+@login_required
+def my_orders():
+    ds = Order.query.filter_by(user_id=g.user.id).order_by(Order.ngay_dat.desc()).all()
+    return render_template("shop/my_orders.html", ds=ds)

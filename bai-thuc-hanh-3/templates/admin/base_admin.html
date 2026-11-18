@@ -17,8 +17,13 @@
             <a href="{{ url_for('admin.books') }}" class="{{ 'active' if ep.startswith('admin.book') }}">Sách</a>
             <a href="{{ url_for('admin.categories') }}" class="{{ 'active' if ep.startswith('admin.categor') }}">Danh mục</a>
             <a href="{{ url_for('admin.orders') }}" class="{{ 'active' if ep.startswith('admin.order') }}">Đơn hàng</a>
+            <a href="{{ url_for('admin.users') }}" class="{{ 'active' if ep.startswith('admin.user') }}">Người dùng</a>
             <hr class="border-secondary">
             <a href="{{ url_for('shop.books') }}">← Trang bán hàng</a>
+            <form method="post" action="{{ url_for('auth.logout') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-link text-start p-2 side-logout" type="submit">Đăng xuất ({{ current_user.ten_dang_nhap }})</button>
+            </form>
         </nav>
         <main class="flex-grow-1 p-4" style="min-width:0">
             {% for cat, msg in get_flashed_messages(with_categories=true) %}

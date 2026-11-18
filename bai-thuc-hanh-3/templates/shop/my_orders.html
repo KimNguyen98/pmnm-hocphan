@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "_macros.html" import badge with context %}
+{% block title %}Đơn của tôi{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Đơn của tôi</h1>
+{% if ds %}
+<div class="table-responsive">
+<table class="table align-middle bg-white">
+  <thead><tr><th>Mã</th><th>Ngày đặt</th><th>Số sách</th><th class="text-end">Tổng</th><th>Trạng thái</th></tr></thead>
+  <tbody>
+  {% for o in ds %}
+    <tr>
+      <td><a href="{{ url_for('shop.order_success', id=o.id) }}">#{{ o.id }}</a></td>
+      <td>{{ o.ngay_dat.strftime('%d/%m/%Y %H:%M') }}</td>
+      <td>{{ o.items|sum(attribute='so_luong') }}</td>
+      <td class="text-end">{{ o.tong_tien|vnd }}</td>
+      <td>{{ badge(o.trang_thai) }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="text-center text-muted py-5">
+  Bạn chưa có đơn hàng nào.
+  <div class="mt-2"><a class="btn btn-primary" href="{{ url_for('shop.books') }}">Chọn sách</a></div>
+</div>
+{% endif %}
+{% endblock %}

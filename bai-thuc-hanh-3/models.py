@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from extensions import db
 
 TRANG_THAI = {
@@ -9,6 +9,33 @@ TRANG_THAI = {
     "da_huy": "Đã huỷ",
 }
 
+VAI_TRO = {
+    "khach": "Khách hàng",
+    "admin": "Quản trị viên",
+}
+
+class User(db.Model):
+    __tablename__ = "nguoi_dung"
+
+    id = db.Column(db.Integer, primary_key=True)
+    ten_dang_nhap = db.Column(db.String(50), nullable=False, unique=True, index=True)
+    ho_ten = db.Column(db.String(100), nullable=False)
+    mat_khau_hash = db.Column(db.String(255), nullable=False)
+    vai_tro = db.Column(db.String(20), nullable=False, default="khach")
+    hoat_dong = db.Column(db.Boolean, nullable=False, default=True)
+    ngay_tao = db.Column(db.DateTime, default=datetime.now)
+
+    orders = db.relationship("Order", backref="user", lazy=True)
+
+    def set_password(self, mat_khau):
+        self.mat_khau_hash = generate_password_hash(mat_khau)
+
+    def check_password(self, mat_khau):
+        return check_password_hash(self.mat_khau_hash, mat_khau)
+
+    @property
+    def la_admin(self):
+        return self.vai_tro == "admin"
 
 class DanhMuc(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -34,6 +61,7 @@ class Sach(db.Model):
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("nguoi_dung.id"))  # đơn của khách nào
     ho_ten = db.Column(db.String(100), nullable=False)
     dien_thoai = db.Column(db.String(15), nullable=False)
     dia_chi = db.Column(db.String(300), nullable=False)

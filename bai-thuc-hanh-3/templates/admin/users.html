@@ -1,0 +1,54 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import csrf_input with context %}
+{% block title %}Người dùng{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Người dùng</h1>
+<div class="table-responsive">
+    <table class="table table-sm align-middle bg-white">
+        <thead>
+            <tr>
+                <th>Tên đăng nhập</th>
+                <th>Họ tên</th>
+                <th>Vai trò</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in ds %}
+            <tr>
+                <td>{{ u.ten_dang_nhap }}{% if u.id == current_user.id %} <span class="text-muted">(bạn)</span>{% endif
+                    %}</td>
+                <td>{{ u.ho_ten }}</td>
+                <td><span class="badge text-bg-{{ 'primary' if u.la_admin else 'secondary' }}">{{ VAI_TRO[u.vai_tro]
+                        }}</span></td>
+                <td>{% if u.hoat_dong %}<span class="badge text-bg-success">Hoạt động</span>{% else %}<span
+                        class="badge text-bg-danger">Đã khoá</span>{% endif %}</td>
+                <td>{{ u.ngay_tao.strftime('%d/%m/%Y') if u.ngay_tao else '' }}</td>
+                <td class="text-end text-nowrap">
+                    {% if u.id != current_user.id %}
+                    <form class="d-inline" method="post" action="{{ url_for('admin.user_role', id=u.id) }}"
+                        data-confirm="{{ 'Hạ' if u.la_admin else 'Nâng' }} quyền tài khoản này?"
+                        onsubmit="return confirm(this.dataset.confirm)">
+
+                        {{ csrf_input() }}
+
+                        <button class="btn btn-sm btn-outline-secondary">
+                            {{ 'Hạ xuống khách' if u.la_admin else 'Nâng lên admin' }}
+                        </button>
+                    </form>
+                    <form class="d-inline" method="post" action="{{ url_for('admin.user_active', id=u.id) }}">
+                        {{ csrf_input() }}
+                        <button
+                            class="btn btn-sm {{ 'btn-outline-danger' if u.hoat_dong else 'btn-outline-success' }}">{{
+                            'Khoá' if u.hoat_dong else 'Mở khoá' }}</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
